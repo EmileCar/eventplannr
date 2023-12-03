@@ -1,37 +1,51 @@
 import React, { createContext, useEffect, useState, useContext } from 'react';
-import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged} from 'firebase/auth';
-import auth from '../config/firebase';
+import { getUser, signIn, signUp } from '../services/authService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
-    const [currentUser, setCurrentUser] = useState({});
+    const [currentUser, setCurrentUser] = useState(null);
 
-    const signIn = async (email, password) => {
-        console.log(auth)
-        return signInWithEmailAndPassword(auth, email, password);
+    const signInFunc = async (email, password) => {
+        signIn(email, password).then((res) => {
+            console.log(res)
+            setCurrentUser(res)
+        })
     }
 
-    const signUp = async (email, password) =>{
-      return createUserWithEmailAndPassword(auth, email, password);
+    const signUpFunc = async (email, password) =>{
+        signUp(email, password).then((res) => {
+            console.log(res)
+            setCurrentUser(res)
+        })
     }
 
     const logOut = async () => {
-      try {
-        await signOut(auth);
-        setCurrentUser({});
-      } catch (error) {
-        console.error("Error signing out:", error);
-      }
+        console.log("logout")
     };
 
     useEffect(() =>{
-        auth.onAuthStateChanged(async (firebaseUser) => {
-            setCurrentUser(firebaseUser);
-        })
+      const loadUser = async () => {
+        try {
+          const token = await AsyncStorage.getItem('token');
+          if (token) {
+            await getUser(token).then((res) => setCurrentUser(res))
+            .catch((err) => {
+              console.error('Error loading user:', err);
+              setCurrentUser(null);
+            });
+          }
+        } catch (error) {
+          console.error('Error loading user:', error);
+          setCurrentUser(null);
+        }
+      };
+    
+      loadUser();
     }, [])
 
-    const authInfo = {currentUser, signIn, signUp, logOut}
+    const authInfo = {currentUser, signInFunc, signUpFunc, logOut}
 
     return (
         <AuthContext.Provider value={authInfo}>

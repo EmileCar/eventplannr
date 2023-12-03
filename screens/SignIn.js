@@ -1,17 +1,16 @@
-// LoginScreen.js
 import React, { useContext, useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { AuthContext } from '../contexts/AuthContext';
 
 const SignIn = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const {signIn} = useContext(AuthContext);
+  const {signInFunc} = useContext(AuthContext);
 
   const handleLogin = async () => {
     try {
-      await signIn(email, password);
+      await signInFunc(email, password);
     } catch (error) {
       console.error('Login Error:', error.message);
       // Handle login error (e.g., display an error message)
@@ -19,7 +18,7 @@ const SignIn = ({ navigation }) => {
   };
 
   return (
-    <View>
+    <View style={styles.authContainer}>
       <Text>Login Screen</Text>
       <TextInput
         placeholder="Email"
@@ -40,5 +39,13 @@ const SignIn = ({ navigation }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+    authContainer: {
+        display: 'grid',
+        placeItems: 'center',
+        border: '1px solid black',
+    },
+});
 
 export default SignIn;

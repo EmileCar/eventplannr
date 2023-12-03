@@ -1,28 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import auth from './firebase'; // Import the firebase module
+import React, { useState, useEffect, useContext } from 'react';
 import { RootNavigator } from './AppNavigator';
 import SignIn from '../screens/SignIn';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignUp from '../screens/SignUp';
+import { AuthContext } from '../contexts/AuthContext';
 
 const AuthStack = createNativeStackNavigator();
 
 const AuthNavigator = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((authUser) => {
-      setUser(authUser);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  
+  const { currentUser } = useContext(AuthContext);
 
   // Only render NavigationContainer when the user is not logged in
-  if (user === null) {
+  if (currentUser === null || currentUser == {}) {
     return (
       <NavigationContainer>
         <AuthStack.Navigator>

@@ -6,11 +6,11 @@ const SignUp = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const {signUp} = useContext(AuthContext);
+  const {signUpFunc} = useContext(AuthContext);
 
   const handleSignup = async () => {
     try {
-      await signUp(email, password);
+      await signUpFunc(email, password);
     } catch (error) {
       console.error('Signup Error:', error.message);
     }

@@ -1,3 +1,4 @@
 {
-    "apiBaseUrl": "https://javabackendemilecaron.onrender.com"
+    "apiBaseUrl": "https://javabackendemilecaron.onrender.com",
+    "apiBaseUrlDevelopment": "http://localhost:8080"
 }
