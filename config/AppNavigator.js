@@ -8,6 +8,8 @@ import UserEvents from '../screens/UserEvents';
 import Dashboard from '../screens/Dashboard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Profile from '../screens/Profile';
+import { TouchableOpacity } from 'react-native';
+import themeStyle from '../styles/theme.style';
 
 
 // ROOT NAVIGATOR
@@ -17,7 +19,6 @@ export const RootNavigator = () => {
     <NavigationContainer>
         <RootStack.Navigator>
             <RootStack.Screen name="Tabs" component={TabNavigator} options={{headerShown : false}}/>
-            {/* <RootStack.Screen name="Auth" component={AuthNavigator} /> */}
             <RootStack.Screen name="Settings" component={Settings} />
         </RootStack.Navigator>
     </NavigationContainer>
@@ -29,9 +30,19 @@ const BottomTab = createBottomTabNavigator();
 
 const TabNavigator = () => {
     return (
-        <BottomTab.Navigator>
+        <BottomTab.Navigator
+        screenOptions={{
+            tabBarActiveTintColor: themeStyle.COLOR_BLACK,
+            tabBarInactiveTintColor: themeStyle.COLOR_INACTIVE, 
+            headerStyle: {
+              backgroundColor: themeStyle.COLOR_PRIMARY, 
+            },
+            headerTintColor: themeStyle.COLOR_WHITE, 
+          }}
+        >
             <BottomTab.Screen
                 options={{
+                    headerShown: false,
                     tabBarIcon: ({ color, size }) => (
                     <Ionicons name="list" color={color} size={size} />
                     ),
@@ -45,8 +56,17 @@ const TabNavigator = () => {
                 tabBarIcon: ({ color, size }) => (
                 <Ionicons name="person" color={color} size={size} />
                 ),
+                title: 'Your Events',
+                headerRight: () => (
+                    <TouchableOpacity
+                        style={{ marginRight: 16 }}
+                        onPress={() => navigation.navigate('Test')} // Navigate to the screen where you add an event
+                    >
+                    <Ionicons name="add" size={24} color="black" />
+                    </TouchableOpacity>
+                ),
             }}
-            name="Your events"
+            name="UserEvents"
             component={UserEventsNavigator}
             />
             <BottomTab.Screen
@@ -94,12 +114,13 @@ const UserEventsNavigator = () => {
                 name="UserEvents"
                 component={UserEvents}
                 options={{ 
-                    headerShown: false 
+                    headerShown: false
                 }}
             />
             <UserEventsStack.Screen
             options={({ route }) => ({
                 title: `${route.params.user.name.first} ${route.params.user.name.last}`,
+                
               })} 
               name="EventDetail" component={EventDetail} />
         </UserEventsStack.Navigator>

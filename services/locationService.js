@@ -3,16 +3,15 @@ import environment from '../environment.json';
 
 const API_BASE_URL = environment.apiBaseUrlDevelopment;
 
-export async function getUpcomingEvents() { 
+export async function getTopLocations() { 
     const token = await AsyncStorage.getItem('token'); 
     try {
-        const response = await fetch(`${API_BASE_URL}/events/upcoming`, {
+        const response = await fetch(`${API_BASE_URL}/locations/top`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
         });
-
         
         return response.json();
     } catch (error) {

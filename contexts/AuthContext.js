@@ -22,7 +22,8 @@ export const AuthProvider = ({children}) => {
     }
 
     const logOut = async () => {
-        console.log("logout")
+        AsyncStorage.removeItem('token');
+        setCurrentUser(null);
     };
 
     useEffect(() =>{
