@@ -18,12 +18,6 @@ import presentationImage from '../assets/img/eventPlaceholderImages/presentation
 
 
 const keywordImageMap = {
-    // ART MAPPINGS
-    art: artImage,
-    exhibit: artImage,
-    exhibition: artImage,
-    gallery: artImage,
-    museum: artImage,
     // BBQ MAPPINGS
     bbq: bbqImage,
     barbecue: bbqImage,
@@ -45,8 +39,6 @@ const keywordImageMap = {
     // EXPO MAPPINGS
     expo: expoImage,
     exposition: expoImage,
-    // FESTIVAL MAPPINGS
-    festival: festivalImage,
     // FILM MAPPINGS
     film: filmImage,
     movie: filmImage,
@@ -62,8 +54,18 @@ const keywordImageMap = {
     // PARTY MAPPINGS
     party: partyImage,
     fiesta: partyImage,
+    // ART MAPPINGS
+    art: artImage,
+    exhibit: artImage,
+    exhibition: artImage,
+    gallery: artImage,
+    museum: artImage,
     // PRESENTATION MAPPINGS
     presentation: presentationImage,
+    // FESTIVAL MAPPINGS
+    festival: festivalImage,
+    fair: festivalImage,
+    fest: festivalImage,
 };
 
 const getDefaultImage = (title) => {

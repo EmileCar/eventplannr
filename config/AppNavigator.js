@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Settings from '../screens/Settings';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import EventDetail from '../screens/EventDetail';
 import UserEvents from '../screens/UserEvents';
 import Dashboard from '../screens/Dashboard';
@@ -10,6 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Profile from '../screens/Profile';
 import { TouchableOpacity } from 'react-native';
 import themeStyle from '../styles/theme.style';
+import AddEvent from '../screens/AddEvent';
 
 
 // ROOT NAVIGATOR
@@ -29,6 +30,7 @@ export const RootNavigator = () => {
 const BottomTab = createBottomTabNavigator();
 
 const TabNavigator = () => {
+    const navigation = useNavigation();
     return (
         <BottomTab.Navigator
         screenOptions={{
@@ -60,9 +62,9 @@ const TabNavigator = () => {
                 headerRight: () => (
                     <TouchableOpacity
                         style={{ marginRight: 16 }}
-                        onPress={() => navigation.navigate('Test')} // Navigate to the screen where you add an event
+                        onPress={() => navigation.navigate('AddEvent')} // Navigate to the screen where you add an event
                     >
-                    <Ionicons name="add" size={24} color="black" />
+                    <Ionicons name="add" size={24} color={themeStyle.COLOR_WHITE} />
                     </TouchableOpacity>
                 ),
             }}
@@ -98,7 +100,7 @@ export const DashboardNavigator = () => {
             />
             <DashboardStack.Screen
             options={({ route }) => ({
-                title: `${route.params.user.name.first} ${route.params.user.name.last}`,
+                title: `Event Detail`,
               })} 
               name="EventDetail" component={EventDetail} />
         </DashboardStack.Navigator>
@@ -108,8 +110,15 @@ export const DashboardNavigator = () => {
 // USER EVENTS NAVIGATOR
 const UserEventsStack = createNativeStackNavigator();
 const UserEventsNavigator = () => {
+    const route = useRoute();
+    console.log(route)
     return (
-        <UserEventsStack.Navigator>
+        <UserEventsStack.Navigator
+            screenOptions={{
+                headerShown: route.name === "AddEvent" ? false : true,
+              }
+            }
+        >
             <UserEventsStack.Screen
                 name="UserEvents"
                 component={UserEvents}
@@ -119,31 +128,15 @@ const UserEventsNavigator = () => {
             />
             <UserEventsStack.Screen
             options={({ route }) => ({
-                title: `${route.params.user.name.first} ${route.params.user.name.last}`,
+                title: `Event Detail`,
                 
               })} 
               name="EventDetail" component={EventDetail} />
+            <UserEventsStack.Screen
+                options={({ route }) => ({
+                title: 'Add Event',
+              })} 
+              name="AddEvent" component={AddEvent} />
         </UserEventsStack.Navigator>
     );    
 }
-
-// const FeedStack = createNativeStackNavigator();
-// export const FeedNavigator = () => {
-//     return (
-//         <FeedStack.Navigator>
-//             <FeedStack.Screen
-//                 name="Feed"
-//                 component={Feed}
-//                 options={{ 
-//                     headerShown: false 
-//                 }}
-//             />
-//             <FeedStack.Screen
-//             options={({ route }) => ({
-//                 title: `${route.params.user.name.first} ${route.params.user.name.last}`,
-//               })} 
-//               name="UserDetail" component={UserDetail} />
-//         </FeedStack.Navigator>
-//     );    
-// }
-

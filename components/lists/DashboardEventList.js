@@ -1,8 +1,14 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import EventItem from '../items/EventItem'; // Assuming EventItem is your component rendering individual events
+import { useNavigation } from '@react-navigation/native';
 
 const DashboardEventList = ({ events }) => {
+  const navigation = useNavigation();
+
+  const navigateToEventDetail = (eventId) => {
+    navigation.navigate('EventDetail', { eventId });
+  };
   return (
     <ScrollView
       horizontal
@@ -11,7 +17,9 @@ const DashboardEventList = ({ events }) => {
     >
       {events.map((event, index) => (
         <View key={event.id} style={styles.eventItemWrapper}>
-          <EventItem event={event} />
+          <TouchableOpacity onPress={() => navigateToEventDetail(event.id)}>
+            <EventItem event={event} />
+          </TouchableOpacity>
         </View>
       ))}
     </ScrollView>
