@@ -8,17 +8,11 @@ export const AuthProvider = ({children}) => {
     const [currentUser, setCurrentUser] = useState(null);
 
     const signInFunc = async (email, password) => {
-        signIn(email, password).then((res) => {
-            console.log(res)
-            setCurrentUser(res)
-        })
+        await signIn(email, password)
     }
 
-    const signUpFunc = async (email, password) =>{
-        signUp(email, password).then((res) => {
-            console.log(res)
-            setCurrentUser(res)
-        })
+    const signUpFunc = async (email, username, password) =>{
+        await signUp(email, username, password)
     }
 
     const logOut = async () => {

@@ -16,6 +16,8 @@ export const signIn = async (email, password) => {
       }),
     });
 
+    console.log(response)
+
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message);
@@ -31,7 +33,7 @@ export const signIn = async (email, password) => {
   }
 };
 
-export const signUp = async (email, password) => {
+export const signUp = async (email, username, password) => {
   try {
     const response = await fetch(`${API_BASE_URL}/auth/signup`, {
       method: 'POST',
@@ -41,6 +43,7 @@ export const signUp = async (email, password) => {
       body: JSON.stringify({
         email,
         password,
+        username,
       }),
     });
 
@@ -82,6 +85,7 @@ export const getUser = async (jwtToken) => {
         });
     
         if (!response.ok) {
+          console.log("RESPONSE NOT OK")
             const error = await response.json();
             throw new Error(error.message);
         }

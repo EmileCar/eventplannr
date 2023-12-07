@@ -16,9 +16,11 @@ const AuthNavigator = () => {
   if (currentUser === null || currentUser == {}) {
     return (
       <NavigationContainer>
-        <AuthStack.Navigator>
+        <AuthStack.Navigator
+          screenOptions={{headerShown: false}}
+        >
           <AuthStack.Screen name="Login" component={SignIn} />
-          <AuthStack.Screen name="Signup" component={SignUp} />
+          <AuthStack.Screen name="SignUp" component={SignUp} />
         </AuthStack.Navigator>
       </NavigationContainer>
     );
