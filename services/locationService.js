@@ -19,3 +19,34 @@ export async function getTopLocations() {
         throw new Error('Er was een probleem bij het ophalen van de gegevens.');
     }
 }
+
+export async function addLocation(locationData) {
+    const token = await AsyncStorage.getItem('token'); 
+    try {
+        console.log(locationData)
+        const response = await fetch(`${API_BASE_URL}/locations`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: locationData.name,
+                address: locationData.address,
+                isPublic: true,
+            }),
+        });
+
+        if(!response.ok) {
+            const error = await response.json();
+            if(error.message){
+                throw new Error(error.message);
+            }
+            throw new Error('Er is iets misgegaan bij het toevoegen van de locatie.');
+        }
+        return response;
+    } catch (error) {
+        console.error(error);
+        throw new Error(error.message);
+    }
+}

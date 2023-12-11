@@ -61,9 +61,7 @@ const styles = StyleSheet.create({
     padding: 16,
     fontSize: themeStyle.FONT_SIZE_SMALL,
     borderColor: 'transparent',
-    borderBottomWidth: 0, 
-    outlineColor: 'transparent', 
-    outlineStyle: 'none',
+    borderBottomWidth: 0,
     width: '100%',
   },
   searchButton: {

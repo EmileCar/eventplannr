@@ -96,4 +96,4 @@ export const getUser = async (jwtToken) => {
         console.error('GetUser Error:', error.message);
         throw error;
     }
-    }
+}

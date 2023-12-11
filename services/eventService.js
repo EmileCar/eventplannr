@@ -68,3 +68,31 @@ export async function getMaybeEvents() {
         throw new Error('Er was een probleem bij het ophalen van de gegevens.');
     }
 }
+
+export async function addEvent(eventData) {
+    console.log(eventData);
+    const token = await AsyncStorage.getItem('token');
+    try {
+        const response = await fetch(`${API_BASE_URL}/events`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(eventData),
+        });
+
+        if(!response.ok) {
+            const error = await response.json();
+            console.log(error)
+            if(error.message){
+                throw new Error(error.message);
+            }
+            throw new Error('Er is iets misgegaan bij het toevoegen van het evenement.');
+        }
+        return response;
+    } catch (error) {
+        console.error(error);
+        throw new Error(error.message);
+    }
+}

@@ -11,6 +11,7 @@ import Profile from '../screens/Profile';
 import { TouchableOpacity } from 'react-native';
 import themeStyle from '../styles/theme.style';
 import AddEvent from '../screens/AddEvent';
+import AddLocation from '../screens/AddLocation';
 
 
 // ROOT NAVIGATOR
@@ -137,6 +138,12 @@ const UserEventsNavigator = () => {
                 title: 'Add Event',
               })} 
               name="AddEvent" component={AddEvent} />
+            <UserEventsStack.Screen
+            options={({ route }) => ({
+                title: `Add Location`,
+                
+              })} 
+              name="AddLocation" component={AddLocation} />
         </UserEventsStack.Navigator>
-    );    
+    );
 }

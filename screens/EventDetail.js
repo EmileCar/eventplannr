@@ -2,8 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Image, Platform } from 'react-native';
 import getDefaultImage from '../utils/eventImageUtil';
 import themeStyle from '../styles/theme.style';
-import DatePickers from '../components/event/DatePickers';
-import { SelectList } from 'react-native-dropdown-select-list';
 import { Text } from 'react-native';
 import { getEventById } from '../services/eventService';
 import { useRoute } from '@react-navigation/native';

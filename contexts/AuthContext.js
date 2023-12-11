@@ -8,11 +8,13 @@ export const AuthProvider = ({children}) => {
     const [currentUser, setCurrentUser] = useState(null);
 
     const signInFunc = async (email, password) => {
-        await signIn(email, password)
+        const data = await signIn(email, password)
+        await getUser(data.token).then((res) => setCurrentUser(res))
     }
 
     const signUpFunc = async (email, username, password) =>{
-        await signUp(email, username, password)
+        const data = await signUp(email, username, password)
+        await getUser(data.token).then((res) => setCurrentUser(res))
     }
 
     const logOut = async () => {
