@@ -96,3 +96,18 @@ export async function addEvent(eventData) {
         throw new Error(error.message);
     }
 }
+
+export async function getEvents(searchValue) {
+    if(searchValue == ""){
+        return [];
+    }
+    try {
+        const response = await fetch(`${API_BASE_URL}/events/search/${searchValue}`, {
+            method: 'GET',
+        });
+        return response.json();
+    } catch (error) {
+        console.error(error);
+        throw new Error('Er was een probleem bij het ophalen van de gegevens.');
+    }
+}

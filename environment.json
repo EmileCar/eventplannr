@@ -1,5 +1,5 @@
 {
-    "apiBaseUrlDevelopment": "http://localhost:8080",
+    "apiBaseUrlDevelopment": "https://javabackendemilecaron.onrender.com",
     "api": "http://localhost:8080",
     "api-temp": "https://javabackendemilecaron.onrender.com"
 }

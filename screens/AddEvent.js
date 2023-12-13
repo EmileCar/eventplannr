@@ -7,6 +7,8 @@ import EventDatePicker from '../components/input/EventDatePicker';
 import { useNavigation } from '@react-navigation/native';
 import { getTopLocations } from '../services/locationService';
 import { addEvent } from '../services/eventService';
+import Select from '../components/input/Select';
+import LocationItemInAddUser from '../components/items/LocationItemInAddUser';
 
 const AddEvent = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,7 +16,7 @@ const AddEvent = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [startDateTime, setStartDateTime] = useState(new Date());
-  const [locationId, setLocationId] = useState('');
+  const [location, setLocation] = useState(null);
   const [isPublic, setIsPublic] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigation();
@@ -27,25 +29,13 @@ const AddEvent = () => {
   const [locations, setLocations] = useState([]);
 
   useEffect(() => {
-    fetchLocations();
   }, []);
 
-  const fetchLocations = async () => {  
-    await getTopLocations().then(locations => {
-      const transformedLocations = locations.map(location => ({
-        key: location.id.toString(),
-        value: location.name,
-      }));
-      setLocations(transformedLocations);
-    }).catch(err => {
-      console.log(err);
-    })
-  }
+
 
   const handleSubmit = async () => {
-    console.log(locationId);
     const isoFormattedDateTime = formatCustomDateTime(new Date(startDateTime));
-    addEvent({title, description, startDateTime: isoFormattedDateTime, locationId, isPublic}).then(() => {
+    addEvent({title, description, startDateTime: isoFormattedDateTime, locationId : location?.id || null, isPublic}).then(() => {
       navigate.goBack();
     }).catch(error => {
       console.log(error);
@@ -62,10 +52,6 @@ const AddEvent = () => {
     
     return `${year}-${month}-${day}T${hours}:${minutes}:00`;
   }
-
-  const handleLocationUpdate = async () => {
-    await fetchLocations();
-  };
 
 
   return (
@@ -91,22 +77,10 @@ const AddEvent = () => {
       <EventDatePicker value={startDateTime} onValueChange={setStartDateTime} />
       <View>
         <Text style={styles.label}>Select a location</Text>
-        <SelectList
-          onPress={() => fetchLocations()}
-          setSelected={(val) => setLocationId(val)}
-          data={locations}
-          save="id"
-          placeholder="Select location"
-          search={true}
-          searchPlaceholder="Search locations"
-          dropdownShown={false}
-          boxStyles={{ borderRadius: 5 }}
-          inputStyles={styles.locationInput}
-          dropdownStyles={{ maxHeight: 200 }}
-          dropdownItemStyles={{ borderBottomWidth: 1, borderBottomColor: 'lightgray' }}
-          dropdownTextStyles={{ paddingVertical: 10, fontSize: themeStyle.FONT_SIZE_SMALL }}
-        />
-        <Pressable onPress={() => navigate.navigate("AddLocation", { onUpdate: handleLocationUpdate }) }>
+        {location ? 
+          <LocationItemInAddUser location={location} />
+          : <Select onSelect={setLocation}/>}
+        <Pressable onPress={() => navigate.navigate("AddLocation") }>
           <Text style={styles.link}>Not in list? Create a new location</Text>
         </Pressable>
       </View>
@@ -197,6 +171,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     textAlign: 'center',
     width: "100%",
+    marginBottom: 30,
   },
   buttonText: {
       color: themeStyle.COLOR_WHITE,

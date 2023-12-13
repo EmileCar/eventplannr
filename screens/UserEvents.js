@@ -23,6 +23,7 @@ const UserEvents = () => {
   return (
     <ScrollView style={styles.container}>
       <SectionHeader title="Going" />
+      {goingEvents.length === 0 ? <Text style={styles.noEvents}>No events</Text> : null}
       <FlatList
         data={goingEvents}
         renderItem={({ item }) => (
@@ -31,10 +32,10 @@ const UserEvents = () => {
         keyExtractor={(item) => item.id.toString()}
       />
       <SectionHeader title="Maybe" />
+      {maybeEvents.length === 0 ? <Text style={styles.noEvents}>No events</Text> : null}
       <FlatList
         data={maybeEvents}
         renderItem={({ item }) => (
-        console.log(item),
         <UserEventItem event={item} />)}
         keyExtractor={(item) => item.id.toString()}
       />
@@ -48,6 +49,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: themeStyle.BACKGROUND_COLOR,
     padding: themeStyle.DEFAULT_PADDING,
+  },
+  noEvents: {
+    margin: 20,
   },
 });
 

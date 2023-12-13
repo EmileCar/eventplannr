@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import themeStyle from '../../styles/theme.style';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 
 const DashboardHeader = () => {
     const [searchValue, setSearchValue] = useState('');
+    const navigation = useNavigation();
 
     const handleSearch = () => {
-        // Navigate to the results component with the search value
-        navigation.navigate('Results', { searchValue });
-      };
+      navigation.navigate('SearchEvents', { searchValue });
+    };
 
     return (
         <View style={styles.container}>

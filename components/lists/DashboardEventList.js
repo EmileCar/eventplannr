@@ -30,12 +30,12 @@ const styles = StyleSheet.create({
   eventContainer: {
     flexDirection: 'row',
     paddingBottom: 8,
-    paddingLeft: 8, // Adjust this margin as needed
-    paddingRight: 8, // Adjust this margin as needed
+    paddingLeft: 8,
+    paddingRight: 8,
   },
   eventItemWrapper: {
-    marginRight: 16, // Adjust this margin as needed
-    overflow: 'visible', // Allow content to overflow
+    marginRight: 16,
+    overflow: 'visible',
   },
 });
 

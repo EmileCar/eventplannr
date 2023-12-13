@@ -17,31 +17,31 @@ const EventItem = ({ event }) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-      backgroundColor: themeStyle.COLOR_LIGHT_GRAY,
-      borderRadius: 10,
-      minWidth: 200,
-      maxWidth: 350,
-      shadowColor: themeStyle.COLOR_BLACK,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.3,
-      shadowRadius: 6,
-      overflow: "hidden",
-    },
-    image: {
-      width: "100%",
-      height: 120,
-    },
-    content: {
-      padding: 10,
-    },
-    title: {
-      fontSize: themeStyle.FONT_SIZE_MEDIUM,
-      fontWeight: themeStyle.FONT_WEIGHT_MEDIUM,
-    },
-    date: {
-      fontSize: themeStyle.FONT_SIZE_SMALL,
-    },
+  container: {
+    backgroundColor: themeStyle.COLOR_LIGHT_GRAY,
+    borderRadius: 10,
+    minWidth: 200,
+    maxWidth: 350,
+    shadowColor: themeStyle.COLOR_BLACK,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    overflow: "hidden",
+  },
+  image: {
+    width: "100%",
+    height: 120,
+  },
+  content: {
+    padding: 10,
+  },
+  title: {
+    fontSize: themeStyle.FONT_SIZE_MEDIUM,
+    fontWeight: themeStyle.FONT_WEIGHT_MEDIUM,
+  },
+  date: {
+    fontSize: themeStyle.FONT_SIZE_SMALL,
+  },
 });
 
 

@@ -4,22 +4,29 @@ import LocationItem from '../items/LocationItem';
 
 const DashboardLocationList = ({locations}) => {
   return (
-    <View style={styles.eventContainer}>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.locationContainer}>
+      <View style={styles.locationItemWrapper}>
         {locations.map((location) => (
             <LocationItem key={location.id} location={location} />
         ))}
-    </View>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-    eventContainer: {
-        padding: 10,
-        display: "flex",
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: 10,
-    },
+  locationContainer: {
+    flexDirection: 'row',
+    paddingBottom: 8,
+    paddingLeft: 8, 
+    paddingRight: 8,
+  },
+  locationItemWrapper: {
+    flexDirection: 'row',
+    gap: 16,
+    marginRight: 16,
+    overflow: 'visible',
+  },
 });
 
 export default DashboardLocationList;

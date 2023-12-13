@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Settings from '../screens/Settings';
@@ -12,6 +12,7 @@ import { TouchableOpacity } from 'react-native';
 import themeStyle from '../styles/theme.style';
 import AddEvent from '../screens/AddEvent';
 import AddLocation from '../screens/AddLocation';
+import SearchEvents from '../screens/SearchEvents';
 
 
 // ROOT NAVIGATOR
@@ -32,6 +33,25 @@ const BottomTab = createBottomTabNavigator();
 
 const TabNavigator = () => {
     const navigation = useNavigation();
+
+    useEffect(() => {
+        console.log(navigation)
+        // Add a listener for the tab press event
+        const unsubscribe = navigation.addListener('tabPress', (e) => {
+          // e.preventDefault(); // Uncomment this line to prevent default tab behavior
+            console.log(e.route.name)
+          // Check if the tab being pressed is the "User Events" tab
+          if (e.route.name === 'UserEvents') {
+            // Execute the refresh action here
+            // For example, you can dispatch an action or call a refresh function
+            console.log('User Events tab pressed. Refreshing...');
+          }
+        });
+    
+        // Clean up the listener when the component is unmounted
+        return unsubscribe;
+      }, [navigation]);
+
     return (
         <BottomTab.Navigator
         screenOptions={{
@@ -104,6 +124,11 @@ export const DashboardNavigator = () => {
                 title: `Event Detail`,
               })} 
               name="EventDetail" component={EventDetail} />
+            <DashboardStack.Screen
+            options={({ route }) => ({
+                title: `Search Events`,
+              })} 
+              name="SearchEvents" component={SearchEvents} />
         </DashboardStack.Navigator>
     );    
 }

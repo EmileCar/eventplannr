@@ -18,12 +18,6 @@ const AddLocation = ({route}) => {
     const handleSubmit = async () => {
         await addLocation({name, address}).then(() => {
             setError(null);
-            const onUpdate = route.params?.onUpdate;
-            if (onUpdate) {
-              setTimeout(() => {
-                onUpdate();
-              }, 1000);
-            }
             navigate.goBack();
         }).catch(error => {
             setError(error.message);
@@ -32,9 +26,6 @@ const AddLocation = ({route}) => {
 
     return (
     <ScrollView style={styles.container}>
-      <Pressable onPress={() => navigate.goBack()}>
-        <Text style={styles.link}>Cancel</Text>
-      </Pressable>
         <Text style={styles.title}>Add new location</Text>
         {error ? <Text style={styles.error}>{error}</Text> : null}
         <View>

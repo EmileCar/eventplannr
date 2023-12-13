@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import themeStyle from '../../styles/theme.style';
 
 const LocationItem = ({ location }) => {
   return (
@@ -11,23 +12,25 @@ const LocationItem = ({ location }) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 15,
-        backgroundColor: "#fff",
-        borderRadius: 10,
-        borderColor: "#000",
-        borderWidth: 2,
-        width: 200,
-    },
-    title: {
-        fontSize: 18,
-        fontWeight: "bold",
-        textAlign: "center",
-    },
-    date: {
-        fontSize: 14,
-        textAlign: "center",
-    },
+  container: {
+    backgroundColor: themeStyle.COLOR_LIGHT_GRAY,
+    borderRadius: 10,
+    minWidth: 200,
+    maxWidth: 350,
+    shadowColor: themeStyle.COLOR_BLACK,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    padding: 10,
+    overflow: "hidden",
+  },
+  title: {
+    fontSize: themeStyle.FONT_SIZE_MEDIUM,
+    fontWeight: themeStyle.FONT_WEIGHT_MEDIUM,
+  },
+  date: {
+    fontSize: themeStyle.FONT_SIZE_SMALL,
+  },
 });
 
 

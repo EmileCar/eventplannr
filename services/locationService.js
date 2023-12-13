@@ -50,3 +50,21 @@ export async function addLocation(locationData) {
         throw new Error(error.message);
     }
 }
+
+export async function getLocations(searchValue) {
+    const token = await AsyncStorage.getItem('token'); 
+    try {
+        const response = await fetch(`${API_BASE_URL}/locations/search?query=${searchValue}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        
+        return response.json();
+    } catch (error) {
+        console.error(error);
+        throw new Error('Er was een probleem bij het ophalen van de gegevens.');
+    }
+}
+

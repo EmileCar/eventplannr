@@ -7,7 +7,7 @@ import EventItem from '../components/items/EventItem';
 import DashboardEventList from '../components/lists/DashboardEventList';
 import { getTopLocations } from '../services/locationService';
 import DashboardLocationList from '../components/lists/DashboardLocationList';
-import DashboardHeader from '../components/dashboard/DashboardHeader';
+import DashboardHeader from '../components/header/DashboardHeader';
 
 const Dashboard = () => {
 
@@ -25,12 +25,11 @@ const Dashboard = () => {
     })
   }, [])
   
-
   return (
     <ScrollView style={styles.container}
     showsVerticalScrollIndicator={false}
     >
-      <DashboardHeader/>
+      <DashboardHeader />
       <View style={styles.content}>
         <View style={styles.itemContainer}>
           <Text style={styles.subtitle}>Upcoming events</Text>
