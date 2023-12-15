@@ -13,7 +13,6 @@ export async function getUpcomingEvents() {
             },
         });
 
-        
         return response.json();
     } catch (error) {
         console.error(error);
@@ -70,7 +69,6 @@ export async function getMaybeEvents() {
 }
 
 export async function addEvent(eventData) {
-    console.log(eventData);
     const token = await AsyncStorage.getItem('token');
     try {
         const response = await fetch(`${API_BASE_URL}/events`, {
@@ -101,13 +99,44 @@ export async function getEvents(searchValue) {
     if(searchValue == ""){
         return [];
     }
+    const token = await AsyncStorage.getItem('token');
     try {
         const response = await fetch(`${API_BASE_URL}/events/search/${searchValue}`, {
             method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
         });
+
+        if(!response.ok) {
+            throw new Error('Er is iets misgegaan bij het zoeken naar evenementen.');
+        }
         return response.json();
     } catch (error) {
         console.error(error);
         throw new Error('Er was een probleem bij het ophalen van de gegevens.');
+    }
+}
+
+export async function updateEvent(eventId, eventData) {
+    const token = await AsyncStorage.getItem('token');
+    try {
+        const response = await fetch(`${API_BASE_URL}/events/${eventId}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(eventData),
+        });
+
+        if(!response.ok) {
+            throw new Error('Er is iets misgegaan bij het wijzigen van het evenement.');
+        }
+        return response;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Er is iets misgegaan bij het wijzigen van het evenement.');
     }
 }

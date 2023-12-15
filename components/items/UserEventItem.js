@@ -3,31 +3,20 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import themeStyle from '../../styles/theme.style';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { getEventDay, getEventMonth } from '../../utils/datetimeUtils';
 
 const UserEventItem = ({ event }) => {
     const navigation = useNavigation();
-
     const navigateToEventDetail = (eventId) => {
-        navigation.navigate('EventDetail', { eventId });
+        navigation.navigate('EventDetailNavigator', { screen: 'EventDetail', params: { eventId } });
     };
-
-    const getEventMonth = () => {
-        const month = new Date(event.startDate).toLocaleString('default', { month: 'short' });
-        
-        return month;
-    };
-
-    const getEventDay = () => {
-        const day = new Date(event.startDate).toLocaleString('default', { day: 'numeric' });
-        return day;
-    }
 
   return (
     <TouchableOpacity onPress={() => navigateToEventDetail(event.id)}>
         <View style={styles.container}>
             <View style={styles.dateContainer}>
-                <Text style={styles.dateText}>{getEventMonth()}</Text>
-                <Text style={styles.dateText}>{getEventDay()}</Text>
+                <Text style={styles.dateText}>{getEventMonth(event.startDateTime)}</Text>
+                <Text style={styles.dateText}>{getEventDay(event.startDateTime)}</Text>
             </View>
             <View style={styles.content}>
                 <Text style={styles.title}>{event.title}</Text>
@@ -37,8 +26,8 @@ const UserEventItem = ({ event }) => {
                 </View>
                 <View style={styles.wrapper}>
                     <Ionicons name="person" size={themeStyle.FONT_SIZE_MEDIUM} color={themeStyle.COLOR_PRIMARY} />
-                    {event.organisators == [] ? event.organisators.map((organisator) => (
-                    <Text key={organisator.id} style={styles.text}>{organisator.name}</Text>
+                    {(event.organisators && event.organisators.length > 0) ? event.organisators.map((organisator) => (
+                    <Text key={organisator.name} style={styles.text}>{organisator.name}</Text>
                 )) : <Text>???</Text>}
                 </View>
                 

@@ -1,23 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, Image, Platform, ScrollView, Pressable, Switch } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, Image, Platform, ScrollView, Pressable, Switch, ActivityIndicator } from 'react-native';
 import getDefaultImage from '../utils/eventImageUtil';
 import themeStyle from '../styles/theme.style';
 import { SelectList } from 'react-native-dropdown-select-list';
 import EventDatePicker from '../components/input/EventDatePicker';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { getTopLocations } from '../services/locationService';
-import { addEvent } from '../services/eventService';
+import { addEvent, updateEvent } from '../services/eventService';
 import Select from '../components/input/Select';
 import LocationItemInAddUser from '../components/items/LocationItemInAddUser';
+import { formatCustomDateTime } from '../utils/datetimeUtils';
 
-const AddEvent = () => {
+const EditEvent = () => {
+  const route = useRoute();
+  const { event } = route.params || {};
+  console.log(event);
+
   const [isLoading, setIsLoading] = useState(false);
   const [defaultImage, setDefaultImage] = useState(null);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [startDateTime, setStartDateTime] = useState(new Date());
-  const [location, setLocation] = useState(null);
-  const [isPublic, setIsPublic] = useState(true);
+  const [title, setTitle] = useState(event.title || '');
+  const [description, setDescription] = useState(event.description || '');
+  console.log(event.startDateTime);
+  const [startDateTime, setStartDateTime] = useState(new Date(event.startDateTime) || new Date());
+  const [location, setLocation] = useState(event.location || null);
+  const [isPublic, setIsPublic] = useState(event.isPublic || true);
   const [error, setError] = useState(null);
   const navigate = useNavigation();
 
@@ -26,32 +32,32 @@ const AddEvent = () => {
     setDefaultImage(defaultImage);
   }, [title]);
 
-  const [locations, setLocations] = useState([]);
-
-  useEffect(() => {
-  }, []);
-
-
-
   const handleSubmit = async () => {
+    setIsLoading(true);
     const isoFormattedDateTime = formatCustomDateTime(new Date(startDateTime));
-    addEvent({title, description, startDateTime: isoFormattedDateTime, locationId : location?.id || null, isPublic}).then(() => {
-      navigate.goBack();
-    }).catch(error => {
-      console.log(error);
-      setError(error.message);
-    })
-  };
 
-  function formatCustomDateTime(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    
-    return `${year}-${month}-${day}T${hours}:${minutes}:00`;
-  }
+    if (event) {
+      await updateEvent(event.id, { title, description, startDateTime: isoFormattedDateTime, locationId: location?.id || null, isPublic })
+        .then(() => {
+          navigate.goBack();
+        })
+        .catch((error) => {
+          console.log(error);
+          setError(error.message);
+        });
+    } else {
+      await addEvent({ title, description, startDateTime: isoFormattedDateTime, locationId: location?.id || null, isPublic })
+        .then(() => {
+          navigate.goBack();
+        })
+        .catch((error) => {
+          console.log(error);
+          setError(error.message);
+        });
+    }
+
+    setIsLoading(false);
+  };
 
 
   return (
@@ -97,8 +103,14 @@ const AddEvent = () => {
         </View>
       </View>
       <Pressable style={styles.button} onPress={() => handleSubmit()}>
-            <Text style={styles.buttonText}>Add event</Text>
-        </Pressable>
+        {isLoading ? (
+          <ActivityIndicator size="small" color={themeStyle.COLOR_WHITE} />
+        ) : (
+          <Text style={styles.buttonText}>{
+            event ? "Update event" : "Add event"
+          }</Text>
+        )}
+      </Pressable>
     </ScrollView>
   );
 };
@@ -187,4 +199,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddEvent;
+export default EditEvent;

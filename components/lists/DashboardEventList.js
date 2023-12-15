@@ -7,8 +7,9 @@ const DashboardEventList = ({ events }) => {
   const navigation = useNavigation();
 
   const navigateToEventDetail = (eventId) => {
-    navigation.navigate('EventDetail', { eventId });
+    navigation.navigate('EventDetailNavigator', { screen: 'EventDetail', params: { eventId } });
   };
+
   return (
     <ScrollView
       horizontal

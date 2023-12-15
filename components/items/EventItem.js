@@ -10,7 +10,7 @@ const EventItem = ({ event }) => {
       <Image source={defaultImage} style={styles.image} />
       <View style={styles.content}>
         <Text style={styles.title}>{event.title}</Text>
-        <Text style={styles.date}>{event.startDate}</Text>
+        <Text style={styles.date}>{event.startDateTime}</Text>
       </View>
     </View>
   );

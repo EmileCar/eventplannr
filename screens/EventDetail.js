@@ -1,31 +1,44 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, ActivityIndicator, Pressable } from 'react-native';
 import getDefaultImage from '../utils/eventImageUtil';
 import themeStyle from '../styles/theme.style';
 import { getEventById } from '../services/eventService';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { AuthContext } from '../contexts/AuthContext';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import SwitchSelector from 'react-native-switch-selector';
 import { changeAttendanceStatus, getAttendanceStatus } from '../services/userAttendanceService';
+import { calculateTimeUntil, formatDate } from '../utils/datetimeUtils';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const AddEvent = () => {
+const EventDetail = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [defaultImage, setDefaultImage] = useState(null);
   const [event, setEvent] = useState({});
   const [statusNumber, setStatusNumber] = useState(null);
   const [error, setError] = useState(null);
   const route = useRoute();
-
+  const navigation = useNavigation();
   const { currentUser } = useContext(AuthContext);
 
+  const options = [
+    { label: "Going", value: "GOING", testID: "switch-going", accessibilityLabel: "switch-to-going" },
+    { label: "Maybe", value: "MAYBE", testID: "switch-maybe", accessibilityLabel: "switch-to-maybe" },
+    { label: "Not going", value: "NOT_GOING", testID: "switch-notgoing", accessibilityLabel: "switch-to-not-going" }
+  ];
+
   useEffect(() => {
+    fetchEventData();
+  }, []);
+
+  const fetchEventData = async () => {
+    setIsLoading(true);
     const eventId = route.params.eventId;
     if (!eventId) {
       setError('Event not found');
       return;
     }
-    getEventById(eventId)
+    await getEventById(eventId)
       .then(async (event) => {
         setEvent(event);
         const attendanceStatus = await getAttendanceStatus(event.id).catch((err) => { console.log(err) });
@@ -46,7 +59,8 @@ const AddEvent = () => {
       .catch((err) => {
         setError(err.message);
       });
-  }, []);
+    setIsLoading(false);
+  };
 
   useEffect(() => {
     if (event.title) {
@@ -55,102 +69,87 @@ const AddEvent = () => {
     }
   }, [event]);
 
-  useEffect(() => {
-    console.log(statusNumber)
-  } , [statusNumber])
-
-  const formatDate = (date) => {
-    const options = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-    };
-    return new Date(date).toLocaleDateString('en-US', options);
-  };
-
-  const calculateDaysUntil = (date) => {
-    const eventDate = new Date(date);
-    const currentDate = new Date();
-    const timeDifference = eventDate.getTime() - currentDate.getTime();
-    const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
-
-    return daysDifference;
-  };
-
-  const options = [
-    { label: "Going", value: "GOING", testID: "switch-going", accessibilityLabel: "switch-to-going" },
-    { label: "Maybe", value: "MAYBE", testID: "switch-maybe", accessibilityLabel: "switch-to-maybe" },
-    { label: "Not going", value: "NOT_GOING", testID: "switch-notgoing", accessibilityLabel: "switch-to-not-going" }
-  ];
-
   const changeAttendance = async (value) => {
-    await changeAttendanceStatus(event.id, value).then(() => {
-      console.log('success')
-    }).catch((err) => {
-      console.log(err)
-    })
+    await changeAttendanceStatus(event.id, value).catch((err) => setError(err.message));
   }
 
+  const isOrganisator = () => {
+    if(event.organisators){
+      return event.organisators.some(organisator => organisator.email === currentUser.email);
+    } else return false;
+  };
+
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        <Image source={defaultImage} style={styles.image} />
-        <Text style={[styles.text, styles.title]}>{event.title}</Text>
-        <Text style={[styles.text, styles.description]}>{event.description}</Text>
-        <View style={styles.row}>
-          <View style={styles.rowItem}>
-            <IonIcons style={styles.rowItemIcon} name="calendar" size={40} color={themeStyle.COLOR_PRIMARY} />
-            <View>
-              <Text style={styles.text}>{formatDate(event.startDate)}</Text>
-              <Text style={[styles.text, {fontWeight: themeStyle.FONT_WEIGHT_MEDIUM}]}>{`in ${calculateDaysUntil(
-                event.startDate
-              )} days`}</Text>
+        {isLoading ? 
+        (
+          <ActivityIndicator size="large" color={themeStyle.COLOR_PRIMARY}/>
+        ) : (
+        <>
+          {error && <Text style={styles.error}>{error}</Text>}
+          <Image source={defaultImage} style={styles.image} />
+          <Text style={[styles.text, styles.title]}>{event.title}</Text>
+          <Text style={[styles.text, styles.description]}>{event.description}</Text>
+          <View style={styles.row}>
+            <View style={styles.rowItem}>
+              <IonIcons style={styles.rowItemIcon} name="calendar" size={40} color={themeStyle.COLOR_PRIMARY} />
+              <View>
+                <Text style={styles.text}>{formatDate(event.startDateTime)}</Text>
+                <Text style={[styles.text, { fontWeight: themeStyle.FONT_WEIGHT_MEDIUM }]}>
+                  {calculateTimeUntil(event.startDateTime)}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.rowItem}>
+              <IonIcons style={styles.rowItemIcon} name="location" size={40} color={themeStyle.COLOR_PRIMARY} />
+              <View>
+                {event.location ? 
+                  <>
+                    <Text style={[styles.text, styles.bold]}>{event.location.name}</Text>
+                    <Text style={styles.text}>{event.location.address}</Text>
+                  </>
+                : <Text style={styles.null}>???</Text>}
+              </View>
+            </View>
+            <View style={styles.rowItem}>
+              <IonIcons style={styles.rowItemIcon} name="person" size={40} color={themeStyle.COLOR_PRIMARY} />
+              <View>
+                {event.organisators && event.organisators.length > 0 ? 
+                
+                  <>
+                    <Text style={styles.text}>This event is from</Text>
+                    {event.organisators.map(organisator => {
+                      return <Text style={[styles.text, styles.bold]} key={organisator.name}>{organisator.name}</Text>
+                    })}
+                  </>
+                : <Text style={styles.null}>???</Text>}
+              </View>          
             </View>
           </View>
-          <View style={styles.rowItem}>
-            <IonIcons style={styles.rowItemIcon} name="location" size={40} color={themeStyle.COLOR_PRIMARY} />
-            <View>
-              {event.location ? 
-                <>
-                  <Text style={[styles.text, styles.bold]}>{event.location.name}</Text>
-                  <Text style={styles.text}>{event.location.address}</Text>
-                </>
-              : <Text style={styles.null}>???</Text>}
-            </View>
-          </View>
-          <View style={styles.rowItem}>
-            <IonIcons style={styles.rowItemIcon} name="person" size={40} color={themeStyle.COLOR_PRIMARY} />
-            <View>
-              {event.organisators && event.organisators.length > 0 ? 
-              
-                <>
-                  <Text style={styles.text}>This event is from</Text>
-                  {event.organisators.map(organisator => {
-                    return <Text style={[styles.text, styles.bold]} key={organisator.name}>{organisator.name}</Text>
-                  })}
-                </>
-              : <Text style={styles.null}>???</Text>}
-            </View>          
-          </View>
-        </View>
-        {statusNumber !== null &&
-          <SwitchSelector
-          initial={statusNumber}
-          onPress={value => changeAttendance(value)}
-          textColor={themeStyle.COLOR_PRIMARY}
-          selectedColor={themeStyle.COLOR_WHITE}
-          buttonColor={themeStyle.COLOR_PRIMARY}
-          borderColor={themeStyle.COLOR_PRIMARY}
-          hasPadding
-          options={options}
-          style={styles.switchSelector}
-          testID="attendance-switch-selector"
-          accessibilityLabel="attendance-switch-selector"
-        />
-        }
+          {statusNumber !== null &&
+            <SwitchSelector
+            initial={statusNumber}
+            onPress={value => changeAttendance(value)}
+            textColor={themeStyle.COLOR_PRIMARY}
+            selectedColor={themeStyle.COLOR_WHITE}
+            buttonColor={themeStyle.COLOR_PRIMARY}
+            borderColor={themeStyle.COLOR_PRIMARY}
+            hasPadding
+            options={options}
+            style={styles.switchSelector}
+            testID="attendance-switch-selector"
+            accessibilityLabel="attendance-switch-selector"
+          />
+          }
+          {isOrganisator() && (
+          <Pressable onPress={() => navigation.navigate("EditEvent", {event})} style={styles.button}>
+            <Ionicons name="pencil" size={themeStyle.FONT_SIZE_SMALL} color={themeStyle.COLOR_WHITE} />
+            <Text style={styles.buttonText}>Edit event</Text>
+          </Pressable>
+        )}
+        </>
+        )}
       </View>
     </ScrollView>
   );
@@ -213,7 +212,26 @@ const styles = StyleSheet.create({
   },
   switchSelector: {
     marginTop: 20,
-  }
+  },
+  error: {
+    color: themeStyle.COLOR_ERROR,
+    textAlign: 'center',
+  },
+  button: {
+    backgroundColor: themeStyle.COLOR_PRIMARY,
+    padding: 10,
+    borderRadius: 10,
+    width: "100%",
+    marginBottom: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 16,
+    marginTop: 16,
+  },
+  buttonText: {
+      color: themeStyle.COLOR_WHITE,
+  },
 });
 
-export default AddEvent;
+export default EventDetail;

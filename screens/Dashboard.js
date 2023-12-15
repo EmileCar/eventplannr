@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { getUpcomingEvents } from '../services/eventService';
 import themeStyle from '../styles/theme.style';
 import { FlatList } from 'react-native-web';
@@ -10,20 +10,23 @@ import DashboardLocationList from '../components/lists/DashboardLocationList';
 import DashboardHeader from '../components/header/DashboardHeader';
 
 const Dashboard = () => {
-
+  const [isLoading, setIsLoading] = useState(false);
   const [upcomingEvents, setUpcomingEvents] = useState([])
   const [topLocations, setTopLocations] = useState([])
 
   useEffect(() => {
-    getUpcomingEvents()
-    .then(events => {
-      setUpcomingEvents(events)
-    })
-    getTopLocations()
-    .then(locations => {
-      setTopLocations(locations)
-    })
+    fetchDashboardData();
   }, [])
+
+  const fetchDashboardData = async () => {
+    setIsLoading(true);
+    const events = await getUpcomingEvents();
+    setUpcomingEvents(events);
+    const locations = await getTopLocations();
+    setTopLocations(locations);
+    setIsLoading(false);
+  }
+
   
   return (
     <ScrollView style={styles.container}
@@ -31,14 +34,19 @@ const Dashboard = () => {
     >
       <DashboardHeader />
       <View style={styles.content}>
-        <View style={styles.itemContainer}>
-          <Text style={styles.subtitle}>Upcoming events</Text>
-          <DashboardEventList events={upcomingEvents}/>
-        </View>
-        <View style={styles.itemContainer}>
-          <Text style={styles.subtitle}>Top locations</Text>
-          <DashboardLocationList locations={topLocations}/>
-        </View>
+        {isLoading ? (<ActivityIndicator size="large" color={themeStyle.COLOR_PRIMARY} /> ) : 
+          (
+          <>
+            <View style={styles.itemContainer}>
+              <Text style={styles.subtitle}>Upcoming events</Text>
+              <DashboardEventList events={upcomingEvents}/>
+            </View>
+            <View style={styles.itemContainer}>
+              <Text style={styles.subtitle}>Top locations</Text>
+              <DashboardLocationList locations={topLocations}/>
+            </View>
+          </>
+          )}
       </View>
     </ScrollView>
   );

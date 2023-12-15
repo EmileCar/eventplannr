@@ -10,6 +10,7 @@ export default {
     COLOR_INACTIVE: 'lightgray',
     COLOR_LIGHT_GRAY: '#eaeaea',
     COLOR_ERROR: 'red',
+    COLOR_WARNING: 'orange',
     FONT_SIZE_SMALL: 16,
     FONT_SIZE_MEDIUM: 20,
     FONT_SIZE_LARGE: 24,

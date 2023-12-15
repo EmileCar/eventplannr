@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, Image, Platform, ScrollView, Pressable } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, Image, Platform, ScrollView, Pressable, ActivityIndicator, Switch } from 'react-native';
 import getDefaultImage from '../utils/eventImageUtil';
 import themeStyle from '../styles/theme.style';
 import { SelectList } from 'react-native-dropdown-select-list';
@@ -16,12 +16,14 @@ const AddLocation = ({route}) => {
     const navigate = useNavigation();
 
     const handleSubmit = async () => {
-        await addLocation({name, address}).then(() => {
-            setError(null);
-            navigate.goBack();
-        }).catch(error => {
-            setError(error.message);
-        })
+      setIsLoading(true);
+      await addLocation({name, address, isPublic}).then(() => {
+          setError(null);
+          navigate.goBack();
+      }).catch(error => {
+          setError(error.message);
+      })
+      setIsLoading(false);
     };
 
     return (
@@ -48,9 +50,26 @@ const AddLocation = ({route}) => {
                 placeholderTextColor={themeStyle.COLOR_INACTIVE}
             />
         </View>
-        <Pressable style={styles.button} onPress={() => handleSubmit()}>
+        <View >
+        <Text style={styles.label}>Is this location public?</Text>
+        <View style={styles.switch}>
+          <Switch
+            trackColor={{ false: themeStyle.COLOR_INACTIVE, true: themeStyle.COLOR_PRIMARY }}
+            thumbColor={isPublic ? themeStyle.COLOR_WHITE : themeStyle.COLOR_WHITE}
+            ios_backgroundColor={themeStyle.COLOR_INACTIVE}
+            onValueChange={setIsPublic}
+            value={isPublic}
+          />
+        </View>
+      </View>
+      {!isPublic && <Text style={styles.warning}>Warning! If your event is public, the location will still be shown for this event.</Text>}
+      <Pressable style={styles.button} onPress={() => handleSubmit()}>
+        {isLoading ? (
+            <ActivityIndicator size="small" color={themeStyle.COLOR_WHITE} />
+        ) : (
             <Text style={styles.buttonText}>Add location</Text>
-        </Pressable>
+        )}
+      </Pressable>
     </ScrollView>
     );
 };
@@ -124,15 +143,23 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: "100%",
   },
-    buttonText: {
-        color: themeStyle.COLOR_WHITE,
-        textAlign: 'center',
-    },
-    error: {
-        color: themeStyle.COLOR_ERROR,
-        paddingBottom: 10,
-        textAlign: 'center',
-    },
+  buttonText: {
+      color: themeStyle.COLOR_WHITE,
+      textAlign: 'center',
+  },
+  error: {
+      color: themeStyle.COLOR_ERROR,
+      paddingBottom: 10,
+      textAlign: 'center',
+  },
+  switch: {
+    paddingBottom: 10,
+  },
+  warning: {
+    color: themeStyle.COLOR_WARNING,
+    paddingBottom: 10,
+    textAlign: 'left',
+  }
 });
 
 export default AddLocation;

@@ -15,6 +15,7 @@ const Select = ({ onSelect }) => {
     };
 
     useEffect(() => {
+        console.log("Fetching locations for add User")
         fetchTopLocations();
     }, []);
 

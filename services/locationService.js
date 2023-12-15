@@ -33,7 +33,7 @@ export async function addLocation(locationData) {
             body: JSON.stringify({
                 name: locationData.name,
                 address: locationData.address,
-                isPublic: true,
+                isPublic: locationData.isPublic,
             }),
         });
 
