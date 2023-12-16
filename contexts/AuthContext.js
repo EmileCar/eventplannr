@@ -8,6 +8,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
     const [currentUser, setCurrentUser] = useState(null);
+    const [showDelayedMessage, setShowDelayedMessage] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     const signInFunc = async (email, password) => {
@@ -24,6 +25,16 @@ export const AuthProvider = ({children}) => {
         AsyncStorage.removeItem('token');
         setCurrentUser(null);
     };
+
+    useEffect(() => {
+      if (isLoading) {
+        const timeoutId = setTimeout(() => {
+          setShowDelayedMessage(true);
+        }, 6000);
+  
+        return () => clearTimeout(timeoutId);
+      }
+    }, [isLoading]);
 
     useEffect(() =>{
       const loadUser = async () => {
@@ -52,8 +63,13 @@ export const AuthProvider = ({children}) => {
     return (
         <AuthContext.Provider value={authInfo}>
           {isLoading ? (
-            <View style={{alignItems: "center", justifyContent: "center", width: "100%"}}>
+            <View style={{alignItems: "center", justifyContent: "center", width: "100%", height: "100%"}}>
               <Text style={{marginBottom: 10}}>Loading the application...</Text>
+              {showDelayedMessage && (
+                <Text style={{ marginBottom: 10 , padding: 16, textAlign: "center"}}>
+                  If this is your first time starting the application, the API takes very long to load. So please be patient and keep the page loading, the API will start up shortly. This can take up about 2-3 minutes.
+                </Text>
+              )}
               <ActivityIndicator style={{alignSelf: "center", justifySelf: "center"}} size="large" color={themeStyle.COLOR_PRIMARY} />
             </View>
           ) : (

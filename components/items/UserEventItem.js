@@ -11,12 +11,21 @@ const UserEventItem = ({ event }) => {
         navigation.navigate('EventDetailNavigator', { screen: 'EventDetail', params: { eventId } });
     };
 
+    const renderEventMonthAndDay = (date) => {
+        if (!date) {
+          return <Text style={styles.dateText}> ? </Text>;
+        }
+        return <>
+          <Text style={styles.dateText}>{getEventMonth(event.startDateTime)}</Text>
+          <Text style={styles.dateText}>{getEventDay(event.startDateTime)}</Text>
+        </>;
+      }
+
   return (
     <TouchableOpacity onPress={() => navigateToEventDetail(event.id)}>
         <View style={styles.container}>
             <View style={styles.dateContainer}>
-                <Text style={styles.dateText}>{getEventMonth(event.startDateTime)}</Text>
-                <Text style={styles.dateText}>{getEventDay(event.startDateTime)}</Text>
+                {renderEventMonthAndDay(event.startDateTime)}
             </View>
             <View style={styles.content}>
                 <Text style={styles.title}>{event.title}</Text>

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, ActivityIndicator, Pressable } from 'react-native';
 import getDefaultImage from '../utils/eventImageUtil';
 import themeStyle from '../styles/theme.style';
-import { getEventById } from '../services/eventService';
+import { deleteEvent, getEventById } from '../services/eventService';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AuthContext } from '../contexts/AuthContext';
 import IonIcons from 'react-native-vector-icons/Ionicons';
@@ -79,6 +79,12 @@ const EventDetail = () => {
     } else return false;
   };
 
+  const deleteEventFunc = async () => {
+    await deleteEvent(event.id).catch((err) => setError(err.message));
+    navigation.goBack();
+  }
+    
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
@@ -143,11 +149,17 @@ const EventDetail = () => {
           />
           }
           {isOrganisator() && (
-          <Pressable onPress={() => navigation.navigate("EditEvent", {event})} style={styles.button}>
-            <Ionicons name="pencil" size={themeStyle.FONT_SIZE_SMALL} color={themeStyle.COLOR_WHITE} />
-            <Text style={styles.buttonText}>Edit event</Text>
-          </Pressable>
-        )}
+            <Pressable onPress={() => navigation.navigate("EditEvent", {event})} style={styles.button}>
+              <Ionicons name="pencil" size={themeStyle.FONT_SIZE_SMALL} color={themeStyle.COLOR_WHITE} />
+              <Text style={styles.buttonText}>Edit event</Text>
+            </Pressable>
+          )}
+          {isOrganisator() && (
+            <Pressable onPress={() => deleteEventFunc()} style={[styles.button, styles.delete]}>
+              <Ionicons name="trash" size={themeStyle.FONT_SIZE_SMALL} color={themeStyle.COLOR_WHITE} />
+              <Text style={styles.buttonText}>Delete event</Text>
+            </Pressable>
+          )}
         </>
         )}
       </View>
@@ -222,7 +234,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     width: "100%",
-    marginBottom: 30,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -232,6 +243,10 @@ const styles = StyleSheet.create({
   buttonText: {
       color: themeStyle.COLOR_WHITE,
   },
+  delete: {
+    backgroundColor: themeStyle.COLOR_ERROR,
+    marginBottom: 30,
+  }
 });
 
 export default EventDetail;

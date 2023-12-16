@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import getDefaultImage from '../../utils/eventImageUtil';
 import themeStyle from '../../styles/theme.style';
+import { formatDate } from '../../utils/datetimeUtils';
 
 const EventItem = ({ event }) => {
   const defaultImage = getDefaultImage(event.title);
@@ -10,7 +11,7 @@ const EventItem = ({ event }) => {
       <Image source={defaultImage} style={styles.image} />
       <View style={styles.content}>
         <Text style={styles.title}>{event.title}</Text>
-        <Text style={styles.date}>{event.startDateTime}</Text>
+        <Text style={styles.date}>{formatDate(event.startDateTime)}</Text>
       </View>
     </View>
   );

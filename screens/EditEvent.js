@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Text, Image, Platform, ScrollView, Pressable, Switch, ActivityIndicator } from 'react-native';
 import getDefaultImage from '../utils/eventImageUtil';
 import themeStyle from '../styles/theme.style';
-import { SelectList } from 'react-native-dropdown-select-list';
 import EventDatePicker from '../components/input/EventDatePicker';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { getTopLocations } from '../services/locationService';
 import { addEvent, updateEvent } from '../services/eventService';
 import Select from '../components/input/Select';
 import LocationItemInAddUser from '../components/items/LocationItemInAddUser';
@@ -13,19 +11,31 @@ import { formatCustomDateTime } from '../utils/datetimeUtils';
 
 const EditEvent = () => {
   const route = useRoute();
-  const { event } = route.params || {};
-  console.log(event);
+  let event = null;
+  if (route.params?.event) {
+    event = route.params.event;
+  }
 
   const [isLoading, setIsLoading] = useState(false);
   const [defaultImage, setDefaultImage] = useState(null);
-  const [title, setTitle] = useState(event.title || '');
-  const [description, setDescription] = useState(event.description || '');
-  console.log(event.startDateTime);
-  const [startDateTime, setStartDateTime] = useState(new Date(event.startDateTime) || new Date());
-  const [location, setLocation] = useState(event.location || null);
-  const [isPublic, setIsPublic] = useState(event.isPublic || true);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [startDateTime, setStartDateTime] = useState(new Date());
+  const [location, setLocation] = useState(null);
+  const [isPublic, setIsPublic] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigation();
+
+  useEffect(() => {
+    console.log(event)
+    if (event) {
+      setTitle(event.title);
+      setDescription(event.description);
+      setStartDateTime(new Date(event.startDateTime));
+      setLocation(event.location);
+      setIsPublic(event.isPublic);
+    }
+  }, [event]);
 
   useEffect(() => {
     const defaultImage = getDefaultImage(title);
@@ -58,7 +68,6 @@ const EditEvent = () => {
 
     setIsLoading(false);
   };
-
 
   return (
     <ScrollView style={styles.container}>

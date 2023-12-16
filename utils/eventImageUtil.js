@@ -15,9 +15,18 @@ import memorialImage from '../assets/img/eventPlaceholderImages/memorial.jpg';
 import musicImage from '../assets/img/eventPlaceholderImages/music.jpg';
 import partyImage from '../assets/img/eventPlaceholderImages/party.jpg';
 import presentationImage from '../assets/img/eventPlaceholderImages/presentation.jpg';
+import quizImage from '../assets/img/eventPlaceholderImages/quiz.jpg';
+import poolImage from '../assets/img/eventPlaceholderImages/pool.jpg';
 
 
 const keywordImageMap = {
+    // QUIZ MAPPINGS
+    quiz: quizImage,
+    trivia: quizImage,
+    quiznight: quizImage,
+    // POOL MAPPINGS
+    pool: poolImage,
+    swimming: poolImage,
     // BBQ MAPPINGS
     bbq: bbqImage,
     barbecue: bbqImage,
@@ -33,6 +42,7 @@ const keywordImageMap = {
     // DINNER MAPPINGS
     dinner: dinnerImage,
     food: dinnerImage,
+    breakfast: dinnerImage,
     // DRINKS MAPPINGS
     drinks: drinksImage,
     cocktail: drinksImage,

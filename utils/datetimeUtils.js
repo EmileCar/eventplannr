@@ -1,4 +1,7 @@
 export const formatDate = (date) => {
+  if (!date) {
+    return 'Date unknown';
+  }
   const options = {
     weekday: 'long',
     year: 'numeric',
@@ -20,8 +23,10 @@ export const formatCustomDateTime = (date) => {
   return `${year}-${month}-${day}T${hours}:${minutes}:00`;
 }
 
-
 export const calculateTimeUntil = (date) => {
+    if (!date) {
+      return '';
+    }
     const eventDate = new Date(date);
     const currentDate = new Date();
 
@@ -54,3 +59,4 @@ export const getEventDay = (date) => {
   const day = new Date(date).toLocaleString('default', { day: 'numeric' });
   return day;
 }
+

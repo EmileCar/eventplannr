@@ -1,18 +1,21 @@
 import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { AuthContext } from '../contexts/AuthContext';
 
 const Profile = () => {
   const { logOut} = useContext(AuthContext)
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text>Welcome to the Profile!</Text>
-      <TouchableOpacity onPress={logOut}>
-        <Text>Log Out</Text>
-      </TouchableOpacity>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default Profile;

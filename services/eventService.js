@@ -140,3 +140,24 @@ export async function updateEvent(eventId, eventData) {
         throw new Error('Er is iets misgegaan bij het wijzigen van het evenement.');
     }
 }
+
+export async function deleteEvent(eventId) {
+    const token = await AsyncStorage.getItem('token');
+    try {
+        const response = await fetch(`${API_BASE_URL}/events/${eventId}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if(!response.ok) {
+            throw new Error('Er is iets misgegaan bij het verwijderen van het evenement.');
+        }
+        return response;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Er is iets misgegaan bij het verwijderen van het evenement.');
+    }
+}
