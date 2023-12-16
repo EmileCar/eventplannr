@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Settings from '../screens/Settings';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Profile from '../screens/Profile';
-import { TouchableOpacity } from 'react-native';
 import themeStyle from '../styles/theme.style';
 import { DashboardNavigator } from './DashboardNavigator';
 import { UserEventsNavigator } from './UserEventsNavigator';
+import { ProfileNavigator } from './ProfileNavigator';
 
 
 // ROOT NAVIGATOR
@@ -27,7 +26,6 @@ export const RootNavigator = () => {
 // BOTTOM TAB NAVIGATOR
 const BottomTab = createBottomTabNavigator();
 const TabNavigator = () => {
-    const navigation = useNavigation();
 
     return (
         <BottomTab.Navigator
@@ -62,13 +60,14 @@ const TabNavigator = () => {
             />
             <BottomTab.Screen
             options={{
-                tabBarLabel: 'Mijn profiel',
+                tabBarLabel: 'Your Profile',
+                headerShown: false,
                 tabBarIcon: ({ color, size }) => (
-                <Ionicons name="person" color={color} size={size} />
+                    <Ionicons name="person" color={color} size={size} />
                 ),
             }}
             name="Profile"
-            component={Profile}
+            component={ProfileNavigator}
             />
         </BottomTab.Navigator>
     );

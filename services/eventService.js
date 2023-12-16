@@ -161,3 +161,26 @@ export async function deleteEvent(eventId) {
         throw new Error('Er is iets misgegaan bij het verwijderen van het evenement.');
     }
 }
+
+export async function getEventsOfUser() {
+    const token = await AsyncStorage.getItem('token');
+    try {
+        const response = await fetch(`${API_BASE_URL}/events/me`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        console.log(response)
+
+        if(!response.ok) {
+            throw new Error('Er is iets misgegaan bij het zoeken naar evenementen.');
+        }
+        return response.json();
+    } catch (error) {
+        console.error(error);
+        throw new Error('Er was een probleem bij het ophalen van de gegevens.');
+    }
+}
