@@ -15,11 +15,11 @@ const DashboardHeader = () => {
     };
 
     return (
-        <View style={[styles.container, {backgroundColor: theme.COLOR_PRIMARY}]}>
-          <Text style={[styles.title, {color: theme.COLOR_TEXT_HEADER}]}>Discover events and parties!</Text>
-          <View style={[styles.searchBar, {backgroundColor: theme.COLOR_BACKGROUND}]}>
+        <View style={[styles.container, {backgroundColor: theme.COLOR_HEADER}]}>
+          <Text style={[styles.title, {color: theme.COLOR_TEXT_WHITE}]}>Discover events and parties!</Text>
+          <View style={[styles.searchBar, {backgroundColor: theme.COLOR_BACKGROUND, borderColor: theme.COLOR_BORDER}]}>
             <TextInput
-              style={styles.input}
+              style={[styles.input, {color: theme.COLOR_TEXT}]}
               placeholder="Search for events"
               value={searchValue}
               onChangeText={(text) => setSearchValue(text)}
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     borderRadius: 8,
+    borderWidth: 1,
     shadowOffset: { width: 0, height: 2 },
     elevation: 2,
     shadowOpacity: 0.2,

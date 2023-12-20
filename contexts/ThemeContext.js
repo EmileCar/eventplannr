@@ -7,7 +7,7 @@ export const ThemeProvider = ({ children }) => {
     const [theme, setTheme] = useState(colors.light);
 
     const toggleTheme = () => {
-        setTheme(themeStyle === colors.light ? colors.dark : colors.light);
+        setTheme(theme === colors.light ? colors.dark : colors.light);
     };
 
     return (

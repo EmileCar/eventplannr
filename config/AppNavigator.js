@@ -1,74 +1,73 @@
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Profile from '../screens/Profile';
-import themeStyle from '../styles/theme.style';
 import { DashboardNavigator } from './DashboardNavigator';
 import { UserEventsNavigator } from './UserEventsNavigator';
 import { ProfileNavigator } from './ProfileNavigator';
-
+import { ThemeContext } from '../contexts/ThemeContext';
 
 // ROOT NAVIGATOR
 const RootStack = createNativeStackNavigator();
 export const RootNavigator = () => {
-  return (
-    <NavigationContainer>
-        <RootStack.Navigator>
-            <RootStack.Screen name="Tabs" component={TabNavigator} options={{headerShown : false}}/>
-            {/* <RootStack.Screen name="Settings" component={Settings} /> */}
-        </RootStack.Navigator>
-    </NavigationContainer>
-  );
+	return (
+		<NavigationContainer>
+			<RootStack.Navigator>
+				<RootStack.Screen name="Tabs" component={TabNavigator} options={{headerShown : false}}/>
+				{/* <RootStack.Screen name="Settings" component={Settings} /> */}
+			</RootStack.Navigator>
+		</NavigationContainer>
+	);
 };
 
 // BOTTOM TAB NAVIGATOR
 const BottomTab = createBottomTabNavigator();
 const TabNavigator = () => {
-
-    return (
-        <BottomTab.Navigator
-            screenOptions={{
-                tabBarActiveTintColor: themeStyle.COLOR_BLACK,
-                tabBarInactiveTintColor: themeStyle.COLOR_INACTIVE, 
-                headerStyle: {
-                backgroundColor: themeStyle.COLOR_PRIMARY, 
-                },
-                headerTintColor: themeStyle.COLOR_WHITE, 
-            }}
-        >
-            <BottomTab.Screen
-                options={{
-                    headerShown: false,
-                    tabBarIcon: ({ color, size }) => (
-                    <Ionicons name="list" color={color} size={size} />
-                    ),
-                }}
-                name="Dashboard"
-                component={DashboardNavigator}
-            />
-            <BottomTab.Screen
-            options={{
-                tabBarLabel: 'User Events',
-                tabBarIcon: ({ color, size }) => (
-                <Ionicons name="person" color={color} size={size} />),
-                headerShown: false,
-            }}
-            name="UserEvents"
-            component={UserEventsNavigator}
-            />
-            <BottomTab.Screen
-            options={{
-                tabBarLabel: 'Your Profile',
-                headerShown: false,
-                tabBarIcon: ({ color, size }) => (
-                    <Ionicons name="person" color={color} size={size} />
-                ),
-            }}
-            name="Profile"
-            component={ProfileNavigator}
-            />
-        </BottomTab.Navigator>
-    );
+	const { theme } = useContext(ThemeContext)
+	return (
+		<BottomTab.Navigator
+			screenOptions={{
+				tabBarActiveTintColor: theme.COLOR_WHITE,
+				tabBarInactiveTintColor: theme.COLOR_INACTIVE,
+				headerShown: false,
+				tabBarBackgroundColor: theme.COLOR_BACKGROUND,
+				tabBarActiveBackgroundColor: theme.COLOR_TABBARACTIVE,
+				tabBarInactiveBackgroundColor: theme.COLOR_TABBARINACTIVE,
+			}}
+		>
+			<BottomTab.Screen
+				options={{
+					headerShown: false,
+					tabBarIcon: ({ color, size }) => (
+					<Ionicons name="list" color={color} size={size} />
+					),
+				}}
+				name="Dashboard"
+				component={DashboardNavigator}
+			/>
+			<BottomTab.Screen
+				options={{
+					tabBarLabel: 'User Events',
+					tabBarIcon: ({ color, size }) => (
+						<Ionicons name="person" color={color} size={size} />
+					),
+					headerShown: false,
+				}}
+				name="UserEvents"
+				component={UserEventsNavigator}
+			/>
+			<BottomTab.Screen
+				options={{
+					tabBarLabel: 'Your Profile',
+					headerShown: false,
+					tabBarIcon: ({ color, size }) => (
+						<Ionicons name="person" color={color} size={size} />
+					),
+				}}
+				name="Profile"
+				component={ProfileNavigator}
+			/>
+		</BottomTab.Navigator>
+	);
 }

@@ -20,18 +20,23 @@ const UserEvents = () => {
   const fetchUserEventsData = async () => {
     setIsLoadingGoingEvents(true);
     setIsLoadingMaybeEvents(true);
-    await getGoingEvents().then((events) => { setGoingEvents(events) }).catch((err) => { console.log(err) });
-    setIsLoadingGoingEvents(false);
-    await getMaybeEvents().then((events) => { setMaybeEvents(events) }).catch((err) => { console.log(err) });
-    setIsLoadingMaybeEvents(false);
+    try{
+      await getGoingEvents().then((events) => { setGoingEvents(events) }).catch((err) => { console.log(err) });
+      await getMaybeEvents().then((events) => { setMaybeEvents(events) }).catch((err) => { console.log(err) });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoadingGoingEvents(false);
+      setIsLoadingMaybeEvents(false);
+    }
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, {backgroundColor: theme.COLOR_BACKGROUND_ROOT}]}>
       <SectionHeader title="Going" />
       {isLoadingGoingEvents ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={theme.COLOR_PRIMARY} />
+          <ActivityIndicator size="large" color={theme.COLOR_ICON} />
         </View>
       ) : (
         <>
@@ -47,7 +52,7 @@ const UserEvents = () => {
       <SectionHeader title="Maybe" />
       {isLoadingMaybeEvents ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={theme.COLOR_PRIMARY} />
+          <ActivityIndicator size="large" color={theme.COLOR_ICON} />
         </View>
       ) : (
         <>

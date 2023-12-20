@@ -1,23 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import themeStyle from '../../styles/theme.style';
+import { ThemeContext } from '../../contexts/ThemeContext';
 
 const LocationItem = ({ location }) => {
+  const { theme } = useContext(ThemeContext)
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{location.name}</Text>
-      <Text style={styles.date}>{location.address}</Text>
+    <View style={[styles.container, {backgroundColor: theme.COLOR_ITEM_BG}]}>
+      <Text style={[styles.title, {color: theme.COLOR_TEXT}]}>{location.name}</Text>
+      <Text style={[styles.date, {color: theme.COLOR_TEXT}]}>{location.address}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: themeStyle.COLOR_LIGHT_GRAY,
     borderRadius: 10,
     minWidth: 200,
     maxWidth: 350,
-    shadowColor: themeStyle.COLOR_BLACK,
+    elevation: 2,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 6,

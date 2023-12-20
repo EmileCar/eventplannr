@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, FlatList, StyleSheet, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, FlatList, StyleSheet, TextInput, Pressable } from 'react-native';
 import themeStyle from '../../styles/theme.style';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { getLocations, getTopLocations } from '../../services/locationService';
+import LocationItemInAddUser from '../items/LocationItemInAddUser';
 
-const Select = ({ onSelect }) => {
+const LocationSelect = ({ location, setLocation }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [searchValue, setSearchValue] = useState('');
     const [locations, setLocations] = useState([]);
 
     const handleSelect = (option) => {
-        onSelect(option);
+        setLocation(option);
         setModalVisible(false);
     };
 
     useEffect(() => {
-        console.log("Fetching locations for add User")
         fetchTopLocations();
     }, []);
 
@@ -45,12 +45,19 @@ const Select = ({ onSelect }) => {
       }
 
     return (
-        <View>
-            <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
-                <Text>Select an option</Text>
-                <Ionicons name="chevron-down-outline" size={20} />
-            </TouchableOpacity>
-
+        <>
+            {location ? (
+                <Pressable onPress={() => setModalVisible(true)}>
+                    <LocationItemInAddUser location={location}/>
+                </Pressable>
+            ) : (
+                <View>
+                    <Pressable style={styles.button} onPress={() => setModalVisible(true)}>
+                        <Text>Select an option</Text>
+                        <Ionicons name="chevron-down-outline" size={20} />
+                    </Pressable>
+                </View>
+            )}
             <Modal visible={modalVisible} animationType="slide">
                 <TextInput
                     placeholder="Search"
@@ -61,18 +68,18 @@ const Select = ({ onSelect }) => {
                 <FlatList
                     data={locations}
                     renderItem={({ item }) => (
-                        <TouchableOpacity style={styles.listItem} onPress={() => handleSelect(item)}>
+                        <Pressable style={styles.listItem} onPress={() => handleSelect(item)}>
                             <Text style={styles.name}>{item.name}</Text>
                             <Text>{item.address}</Text>    
-                        </TouchableOpacity>
+                        </Pressable>
                     )}
                 />
 
-                <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
+                <Pressable style={styles.closeButton} onPress={() => setModalVisible(false)}>
                     <Text style={styles.closeButtonText}>Close</Text>
-                </TouchableOpacity>
+                </Pressable>
             </Modal>
-        </View>
+        </>
     );
 };
 
@@ -121,4 +128,4 @@ const styles = StyleSheet.create({
     },  
 });
 
-export default Select;
+export default LocationSelect;

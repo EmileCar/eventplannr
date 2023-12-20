@@ -9,8 +9,7 @@ const SignIn = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { theme } = useContext(ThemeContext)
-
-  const {signInFunc} = useContext(AuthContext);
+  const { signInFunc } = useContext(AuthContext);
 
   const handleLogin = async () => {
     try {
@@ -22,27 +21,27 @@ const SignIn = ({ navigation }) => {
   };
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.COLOR_BACKGROUND}]}>
+    <View style={[styles.container, {backgroundColor: theme.COLOR_BACKGROUND_ROOT}]}>
       <Text style={[styles.title, {color: theme.COLOR_TEXT_AUTH}]}>Log in to Eventplannr</Text>
       {error ? <Text style={[styles.error, {color: theme.COLOR_ERROR}]}>{error}</Text> : null}
       <TextInput
         placeholder="Email"
         value={email}
-        style={[styles.input, {backgroundColor: theme.COLOR_BACKGROUND, color: theme.COLOR_TEXT, borderColor: theme.COLOR_PRIMARY}]}
+        style={[styles.input, {backgroundColor: theme.COLOR_BACKGROUND, color: theme.COLOR_TEXT, borderColor: theme.COLOR_TEXT_AUTH}]}
         onChangeText={(text) => setEmail(text)}
       />
       <TextInput
         placeholder="Password"
         secureTextEntry
         value={password}
-        style={[styles.input, {backgroundColor: theme.COLOR_BACKGROUND, color: theme.COLOR_TEXT, borderColor: theme.COLOR_PRIMARY}]}
+        style={[styles.input, {backgroundColor: theme.COLOR_BACKGROUND, color: theme.COLOR_TEXT, borderColor: theme.COLOR_TEXT_AUTH}]}
         onChangeText={(text) => setPassword(text)}
       />
       <Pressable onPress={handleLogin}>
-        <Text style={[styles.button, {backgroundColor: theme.COLOR_PRIMARY, color: theme.COLOR_TEXT_HEADER}]}>Log in</Text>
+        <Text style={[styles.button, {backgroundColor: theme.COLOR_BUTTON, color: theme.COLOR_BUTTON_TEXT}]}>Log in</Text>
       </Pressable>
       <Pressable onPress={() => navigation.navigate('SignUp')}>
-        <Text style={[styles.button, {backgroundColor: theme.COLOR_PRIMARY, color: theme.COLOR_TEXT_HEADER}]}>Or sign up</Text>
+        <Text style={[styles.button, {backgroundColor: theme.COLOR_BUTTON, color: theme.COLOR_BUTTON_TEXT}]}>Or sign up</Text>
       </Pressable>
     </View>
   );

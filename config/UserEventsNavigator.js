@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import EventDetail from '../screens/EventDetail';
 import UserEvents from '../screens/UserEvents';
@@ -9,9 +9,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Pressable } from 'react-native';
 import themeStyle from '../styles/theme.style';
 import { EventDetailNavigator } from './EventDetailNavigator';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 export const UserEventsNavigator = () => {
     const route = useRoute();
+    const { theme } = useContext(ThemeContext)
     const navigation = useNavigation();
     const UserEventsStack = createNativeStackNavigator();
 
@@ -23,15 +25,15 @@ export const UserEventsNavigator = () => {
                 options={{
                     title: 'Your Events',
                     headerStyle: {
-                        backgroundColor: themeStyle.COLOR_PRIMARY,
+                        backgroundColor: theme.COLOR_HEADER,
                     },
-                    headerTintColor: themeStyle.COLOR_WHITE,
+                    headerTintColor: theme.COLOR_TEXT_WHITE,
                     headerRight: () => (
                         <Pressable
                             style={{ marginRight: 16 }}
                             onPress={() => navigation.navigate('AddEvent')}
                         >
-                            <Ionicons name="add" size={24} color={themeStyle.COLOR_WHITE} />
+                            <Ionicons name="add" size={24} color={theme.COLOR_WHITE} />
                         </Pressable>
                     ),
                 }}

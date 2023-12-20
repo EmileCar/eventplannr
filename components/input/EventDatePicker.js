@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
 import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
 import themeStyle from '../../styles/theme.style';
+import { ThemeContext } from '../../contexts/ThemeContext';
 
 const EventDatePicker = ({ value, onValueChange }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const { theme } = useContext(ThemeContext)
 
   const handleDatePress = () => {
     setShowDatePicker(true);
@@ -17,45 +19,28 @@ const EventDatePicker = ({ value, onValueChange }) => {
   };
 
   return (
-    <View style={styles.container}>
-        <Text style={styles.label}>When does your event start?</Text>
-      <TouchableOpacity onPress={handleDatePress} style={styles.input}>
+    <>
+      <Pressable onPress={handleDatePress} style={[styles.input, {backgroundColor: theme.COLOR_BACKGROUND, borderColor: theme.COLOR_INACTIVE}]}>
         <Text>{dayjs(value).format('YYYY-MM-DD HH:mm')}</Text>
-      </TouchableOpacity>
+      </Pressable>
       {showDatePicker && (
         <DateTimePicker
           value={value}
           onValueChange={handleDateChange}
           mode="datetime"
           displayFullDays={true}
-          headerContainerStyle={styles.headerContainer}
-          headerTextStyle={styles.headerText}
-          headerButtonStyle={styles.headerButton}
-          buttonPrevIcon={<Text style={styles.buttonText}>{'<'}</Text>}
-          buttonNextIcon={<Text style={styles.buttonText}>{'>'}</Text>}
+          headerContainerStyle={{backgroundColor: theme.COLOR_ITEM_BG}}
+          headerTextStyle={{fontSize: themeStyle.FONT_SIZE_SMALL, fontWeight: themeStyle.FONT_WEIGHT_BOLD}}
+          headerButtonStyle={{padding: 10}}
+          buttonPrevIcon={<Text style={{fontSize: themeStyle.FONT_SIZE_MEDIUM}}>{'<'}</Text>}
+          buttonNextIcon={<Text style={{fontSize: themeStyle.FONT_SIZE_MEDIUM}}>{'>'}</Text>}
         />
       )}
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-  },
-  headerContainer: {
-    backgroundColor: '#F5FCFF',
-  },
-  headerText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  headerButton: {
-    padding: 10,
-  },
-  buttonText: {
-    fontSize: 18,
-  },
   input: {
     width: '100%',
     borderRadius: 5,
@@ -66,14 +51,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     backgroundColor: themeStyle.COLOR_WHITE,
-  },
-  label: {
-    fontSize: themeStyle.FONT_SIZE_SMALL,
-    fontWeight: themeStyle.FONT_WEIGHT_LIGHT,
-    textAlign: 'left',
-    width: '100%',
-    marginBottom: 5,
-  },
+  }
 });
 
 export default EventDatePicker;

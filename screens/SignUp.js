@@ -22,8 +22,8 @@ const SignUp = ({ navigation }) => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.COLOR_BACKGROUND }]}>
-      <Text style={[styles.title, { color: theme.COLOR_PRIMARY }]}>
+    <View style={[styles.container, { backgroundColor: theme.COLOR_BACKGROUND_ROOT }]}>
+      <Text style={[styles.title, { color: theme.COLOR_TEXT_AUTH }]}>
         Register to Eventplannr
       </Text>
       {error ? (
@@ -37,7 +37,7 @@ const SignUp = ({ navigation }) => {
           {
             backgroundColor: theme.COLOR_BACKGROUND,
             color: theme.COLOR_TEXT,
-            borderColor: theme.COLOR_PRIMARY,
+            borderColor: theme.COLOR_TEXT_AUTH,
           },
         ]}
         onChangeText={(text) => setEmail(text)}
@@ -50,7 +50,7 @@ const SignUp = ({ navigation }) => {
           {
             backgroundColor: theme.COLOR_BACKGROUND,
             color: theme.COLOR_TEXT,
-            borderColor: theme.COLOR_PRIMARY,
+            borderColor: theme.COLOR_TEXT_AUTH,
           },
         ]}
         onChangeText={(text) => setUsername(text)}
@@ -64,7 +64,7 @@ const SignUp = ({ navigation }) => {
           {
             backgroundColor: theme.COLOR_BACKGROUND,
             color: theme.COLOR_TEXT,
-            borderColor: theme.COLOR_PRIMARY,
+            borderColor: theme.COLOR_TEXT_AUTH,
           },
         ]}
         onChangeText={(text) => setPassword(text)}
@@ -74,8 +74,8 @@ const SignUp = ({ navigation }) => {
           style={[
             styles.button,
             {
-              backgroundColor: theme.COLOR_PRIMARY,
-              color: theme.COLOR_TEXT_HEADER,
+              backgroundColor: theme.COLOR_BUTTON,
+              color: theme.COLOR_BUTTON_TEXT,
             },
           ]}
         >
@@ -87,8 +87,8 @@ const SignUp = ({ navigation }) => {
           style={[
             styles.button,
             {
-              backgroundColor: theme.COLOR_PRIMARY,
-              color: theme.COLOR_TEXT_HEADER,
+              backgroundColor: theme.COLOR_BUTTON,
+              color: theme.COLOR_BUTTON_TEXT,
             },
           ]}
         >

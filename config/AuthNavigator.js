@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { RootNavigator } from './AppNavigator';
 import SignIn from '../screens/SignIn';
 import { NavigationContainer } from '@react-navigation/native';
@@ -17,7 +17,9 @@ const AuthNavigator = () => {
     return (
       <NavigationContainer>
         <AuthStack.Navigator
-          screenOptions={{headerShown: false}}
+          screenOptions={{
+            headerShown: false,
+          }}
         >
           <AuthStack.Screen name="Login" component={SignIn} />
           <AuthStack.Screen name="SignUp" component={SignUp} />

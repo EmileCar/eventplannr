@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { ThemeContext } from '../contexts/ThemeContext';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { getEvents } from '../services/eventService';
@@ -41,8 +41,8 @@ const SearchEvents = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.searchBar, { backgroundColor: theme.COLOR_BACKGROUND, borderColor: theme.COLOR_TEXT, color: theme.COLOR_TEXT }]}>
+    <View style={[styles.container, {backgroundColor: theme.COLOR_BACKGROUND_ROOT}]}>
+      <View style={[styles.searchBar, { backgroundColor: theme.COLOR_BACKGROUND, borderColor: theme.COLOR_BORDER, color: theme.COLOR_TEXT }]}>
         <TextInput
           style={[styles.input, { color: theme.COLOR_TEXT }]}
           placeholder="Search for events"
@@ -50,11 +50,11 @@ const SearchEvents = () => {
           onChangeText={(text) => setSearchValue(text)}
           onSubmitEditing={handleSearch}
         />
-        <TouchableOpacity onPress={handleSearch} style={styles.searchButton}>
+        <Pressable onPress={handleSearch} style={styles.searchButton}>
           <Ionicons name="arrow-forward" size={24} color={theme.COLOR_TEXT} />
-        </TouchableOpacity>
+        </Pressable>
       </View>
-      <ScrollView>{renderEvents()}</ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>{renderEvents()}</ScrollView>
     </View>
   );
 };
@@ -62,6 +62,7 @@ const SearchEvents = () => {
 const styles = StyleSheet.create({
   container: {
     padding: themeStyle.DEFAULT_PADDING,
+    flex: 1,
   },
   searchBar: {
     borderRadius: 8,

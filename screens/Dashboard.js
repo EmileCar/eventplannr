@@ -6,7 +6,7 @@ import DashboardEventList from '../components/lists/DashboardEventList';
 import { getTopLocations } from '../services/locationService';
 import DashboardLocationList from '../components/lists/DashboardLocationList';
 import DashboardHeader from '../components/header/DashboardHeader';
-import { ThemeContext } from 'react-native-elements';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,29 +20,32 @@ const Dashboard = () => {
 
   const fetchDashboardData = async () => {
     setIsLoading(true);
-    const events = await getUpcomingEvents();
-    setUpcomingEvents(events);
-    const locations = await getTopLocations();
-    setTopLocations(locations);
-    setIsLoading(false);
+    try{
+      const events = await getUpcomingEvents();
+      setUpcomingEvents(events);
+      const locations = await getTopLocations();
+      setTopLocations(locations);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   
   return (
-    <ScrollView style={{flex: 1}}
-    showsVerticalScrollIndicator={false}
-    >
+    <ScrollView style={{flex: 1, backgroundColor: theme.COLOR_BACKGROUND_ROOT}} showsVerticalScrollIndicator={false}>
       <DashboardHeader />
       <View style={styles.content}>
-        {isLoading ? (<ActivityIndicator size="large" color={theme.COLOR_PRIMARY} /> ) : 
+        {isLoading ? (<ActivityIndicator size="large" color={theme.COLOR_ICON} /> ) : 
           (
           <>
             <View style={{width: "100%"}}>
-              <Text style={styles.subtitle}>Upcoming events</Text>
+              <Text style={[styles.subtitle, {color: theme.COLOR_TEXT}]}>Upcoming events</Text>
               <DashboardEventList events={upcomingEvents}/>
             </View>
             <View style={{width: "100%"}}>
-              <Text style={styles.subtitle}>Top locations</Text>
+              <Text style={[styles.subtitle, {color: theme.COLOR_TEXT}]}>Top locations</Text>
               <DashboardLocationList locations={topLocations}/>
             </View>
           </>

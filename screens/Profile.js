@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, Alert } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { AuthContext } from '../contexts/AuthContext';
 import { Avatar, ListItem } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -18,7 +18,7 @@ const Profile = () => {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [eventToDelete, setEventToDelete] = useState(null);
   const navigation = useNavigation();
-  const { theme } = useContext(ThemeContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   useEffect(() => {
     if(currentUser){
@@ -29,13 +29,12 @@ const Profile = () => {
   const fetchUserData = async () => {
     await getEventsOfUser(currentUser.id).then((data) => { 
       setUserEvents(data)
-    })
+    }).catch((err) => { console.log(err) })
   }
 
   const handleDeleteEvent = async (eventId) => {
     try {
       await deleteEvent(eventId);
-      // Update the userEvents state to reflect the changes
       const updatedEvents = userEvents.filter(event => event.id !== eventId);
       setUserEvents(updatedEvents);
     } catch (error) {
@@ -44,21 +43,23 @@ const Profile = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.topSection, {backgroundColor: theme.COLOR_PRIMARY}]}>
-        <Text style={styles.header}>Profile Settings</Text>
+    <View style={[styles.container, {backgroundColor: theme.COLOR_BACKGROUND_ROOT}]}>
+      <View style={[styles.topSection, {backgroundColor: theme.COLOR_HEADER}]}>
+        <Text style={[styles.header, {color: theme.COLOR_TEXT_WHITE}]}>Profile Settings</Text>
         <View style={styles.topSectionContent}>
-          <Text style={styles.username}>{currentUser.username}</Text>
-          <Text style={styles.email}>{currentUser.email}</Text>
+          <Text style={[styles.username, {color: theme.COLOR_TEXT_WHITE}]}>{currentUser.username}</Text>
+          <Text style={[styles.email, {color: theme.COLOR_TEXT_WHITE}]}>{currentUser.email}</Text>
           {userEvents &&
-            <Text style={styles.eventsCreated}>Events created: {userEvents.length}</Text>
+            <Text style={[styles.eventsCreated, {color: theme.COLOR_TEXT_WHITE}]}>Events created: {userEvents.length}</Text>
           }
         </View>
       </View>
       <ListItem bottomDivider>
-      <ListItem.Content>
-        <ListItem.Title>Change theme</ListItem.Title>
-      </ListItem.Content>
+      <Pressable onPress={() => toggleTheme()}>
+        <ListItem.Content>
+          <ListItem.Title>Change theme</ListItem.Title>
+        </ListItem.Content>
+      </Pressable>
       <ListItem.Swipeable />
     </ListItem>
 
@@ -87,13 +88,13 @@ const Profile = () => {
               </View>
               <View style={styles.buttons}>
                 <Pressable style={styles.button} onPress={() => navigation.navigate("EditEvent", {event})}>
-                  <Ionicons name='pencil' size={"large"} color={themeStyle.COLOR_PRIMARY}/>
+                  <Ionicons name='pencil' size={"large"} color={theme.COLOR_ICON}/>
                 </Pressable>
                 <Pressable style={styles.button} onPress={() => {
                   setEventToDelete(event);
                   setShowDeleteAlert(true);
                 }}>
-                  <Ionicons name='trash' size={"large"} color={themeStyle.COLOR_PRIMARY}/>
+                  <Ionicons name='trash' size={"large"} color={theme.COLOR_ICON}/>
                 </Pressable>
               </View>
             </ListItem.Content>
@@ -105,7 +106,7 @@ const Profile = () => {
           <ListItem.Content>
             <ListItem.Title>Sign out</ListItem.Title>
           </ListItem.Content>
-          <Ionicons name='arrow-forward' size={"large"} color={themeStyle.COLOR_PRIMARY}/>
+          <Ionicons name='arrow-forward' size={"large"} color={theme.COLOR_ICON}/>
         </ListItem>
       </Pressable>
       <AwesomeAlert
@@ -116,7 +117,7 @@ const Profile = () => {
         showConfirmButton={true}
         cancelText="Cancel"
         confirmText="Delete"
-        confirmButtonColor={themeStyle.COLOR_ERROR}
+        confirmButtonColor={theme.COLOR_ERROR}
         onCancelPressed={() => {
           setShowDeleteAlert(false);
           setEventToDelete(null);
@@ -142,7 +143,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 500,
     with: "100%",
-    color: themeStyle.COLOR_WHITE
   },
   topSectionContent: {
     alignSelf: "center",
@@ -153,14 +153,11 @@ const styles = StyleSheet.create({
     fontSize: themeStyle.FONT_SIZE_DISPLAY,
     fontWeight: themeStyle.FONT_WEIGHT_BOLD,
     with: "100%",
-    color: themeStyle.COLOR_WHITE
   },
   email: {
-    color: themeStyle.COLOR_WHITE,
     textAlign: "center",
   },
   eventsCreated: {
-    color: themeStyle.COLOR_WHITE,
     textAlign: "center",
     paddingTop: 16,
   },
