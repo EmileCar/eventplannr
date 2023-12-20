@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { getUpcomingEvents } from '../services/eventService';
 import themeStyle from '../styles/theme.style';
-import { FlatList } from 'react-native-web';
-import EventItem from '../components/items/EventItem';
 import DashboardEventList from '../components/lists/DashboardEventList';
 import { getTopLocations } from '../services/locationService';
 import DashboardLocationList from '../components/lists/DashboardLocationList';
 import DashboardHeader from '../components/header/DashboardHeader';
+import { ThemeContext } from 'react-native-elements';
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [upcomingEvents, setUpcomingEvents] = useState([])
   const [topLocations, setTopLocations] = useState([])
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     fetchDashboardData();
@@ -29,19 +29,19 @@ const Dashboard = () => {
 
   
   return (
-    <ScrollView style={styles.container}
+    <ScrollView style={{flex: 1}}
     showsVerticalScrollIndicator={false}
     >
       <DashboardHeader />
       <View style={styles.content}>
-        {isLoading ? (<ActivityIndicator size="large" color={themeStyle.COLOR_PRIMARY} /> ) : 
+        {isLoading ? (<ActivityIndicator size="large" color={theme.COLOR_PRIMARY} /> ) : 
           (
           <>
-            <View style={styles.itemContainer}>
+            <View style={{width: "100%"}}>
               <Text style={styles.subtitle}>Upcoming events</Text>
               <DashboardEventList events={upcomingEvents}/>
             </View>
-            <View style={styles.itemContainer}>
+            <View style={{width: "100%"}}>
               <Text style={styles.subtitle}>Top locations</Text>
               <DashboardLocationList locations={topLocations}/>
             </View>
@@ -53,10 +53,6 @@ const Dashboard = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: themeStyle.BACKGROUND_COLOR,
-  },
   content: {
     flex: 1,
     padding: themeStyle.DEFAULT_PADDING,
@@ -67,11 +63,7 @@ const styles = StyleSheet.create({
     fontWeight: themeStyle.FONT_WEIGHT_MEDIUM,
     paddingTop: 10,
     paddingBottom: 10,
-  },
-  itemContainer: {
-    width: "100%",
-    backgroundColor: themeStyle.BACKGROUND_COLOR_LIGHT,
-  },
+  }
 });
 
 export default Dashboard;

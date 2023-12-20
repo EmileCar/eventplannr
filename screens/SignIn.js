@@ -1,12 +1,14 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Pressable, Dimensions } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Pressable } from 'react-native';
 import { AuthContext } from '../contexts/AuthContext';
 import themeStyle from '../styles/theme.style';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 const SignIn = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const { theme } = useContext(ThemeContext)
 
   const {signInFunc} = useContext(AuthContext);
 
@@ -20,27 +22,27 @@ const SignIn = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Log in to Eventplannr</Text>
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+    <View style={[styles.container, {backgroundColor: theme.COLOR_BACKGROUND}]}>
+      <Text style={[styles.title, {color: theme.COLOR_TEXT_AUTH}]}>Log in to Eventplannr</Text>
+      {error ? <Text style={[styles.error, {color: theme.COLOR_ERROR}]}>{error}</Text> : null}
       <TextInput
         placeholder="Email"
         value={email}
-        style={styles.input}
+        style={[styles.input, {backgroundColor: theme.COLOR_BACKGROUND, color: theme.COLOR_TEXT, borderColor: theme.COLOR_PRIMARY}]}
         onChangeText={(text) => setEmail(text)}
       />
       <TextInput
         placeholder="Password"
         secureTextEntry
         value={password}
-        style={styles.input}
+        style={[styles.input, {backgroundColor: theme.COLOR_BACKGROUND, color: theme.COLOR_TEXT, borderColor: theme.COLOR_PRIMARY}]}
         onChangeText={(text) => setPassword(text)}
       />
       <Pressable onPress={handleLogin}>
-        <Text style={styles.button}>Log in</Text>
+        <Text style={[styles.button, {backgroundColor: theme.COLOR_PRIMARY, color: theme.COLOR_TEXT_HEADER}]}>Log in</Text>
       </Pressable>
       <Pressable onPress={() => navigation.navigate('SignUp')}>
-        <Text style={styles.button}>Or sign up</Text>
+        <Text style={[styles.button, {backgroundColor: theme.COLOR_PRIMARY, color: theme.COLOR_TEXT_HEADER}]}>Or sign up</Text>
       </Pressable>
     </View>
   );
@@ -48,7 +50,6 @@ const SignIn = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-      backgroundColor: themeStyle.COLOR_WHITE,
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center', 
@@ -58,13 +59,10 @@ const styles = StyleSheet.create({
     title: {
       fontSize: themeStyle.FONT_SIZE_LARGE,
       fontWeight: themeStyle.FONT_WEIGHT_BOLD,
-      color: themeStyle.COLOR_PRIMARY,
       paddingBottom: themeStyle.DEFAULT_PADDING,
     },
     input: {
-      backgroundColor: themeStyle.COLOR_WHITE,
       padding: 10,
-      borderColor: themeStyle.COLOR_PRIMARY,
       borderWidth: 1,
       borderRadius: 5,
       width: 200,
@@ -78,7 +76,6 @@ const styles = StyleSheet.create({
       width: 200,
     },
     error: {
-      color: themeStyle.COLOR_ERROR,
       paddingBottom: 10,
     },
 });

@@ -9,6 +9,7 @@ import { formatDate } from '../utils/datetimeUtils';
 import { useNavigation } from '@react-navigation/native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import themeStyle from '../styles/theme.style';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 const Profile = () => {
   const { currentUser, logOut} = useContext(AuthContext)
@@ -17,6 +18,7 @@ const Profile = () => {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [eventToDelete, setEventToDelete] = useState(null);
   const navigation = useNavigation();
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     if(currentUser){
@@ -43,7 +45,7 @@ const Profile = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.topSection}>
+      <View style={[styles.topSection, {backgroundColor: theme.COLOR_PRIMARY}]}>
         <Text style={styles.header}>Profile Settings</Text>
         <View style={styles.topSectionContent}>
           <Text style={styles.username}>{currentUser.username}</Text>
@@ -134,7 +136,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   topSection: {
-    backgroundColor: themeStyle.COLOR_PRIMARY,
     padding: 16,
   },
   header: {

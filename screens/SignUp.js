@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Pressable } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Pressable } from 'react-native';
 import { AuthContext } from '../contexts/AuthContext';
+import { ThemeContext } from '../contexts/ThemeContext';
 import themeStyle from '../styles/theme.style';
 
 const SignUp = ({ navigation }) => {
@@ -8,45 +9,91 @@ const SignUp = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
-  const {signUpFunc} = useContext(AuthContext);
+  const { signUpFunc } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
 
   const handleSignup = async () => {
     try {
       await signUpFunc(email, username, password);
     } catch (error) {
       console.error('Signup Error:', error.message);
-      setError(error.message)
+      setError(error.message);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Register to Eventplannr</Text>
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+    <View style={[styles.container, { backgroundColor: theme.COLOR_BACKGROUND }]}>
+      <Text style={[styles.title, { color: theme.COLOR_PRIMARY }]}>
+        Register to Eventplannr
+      </Text>
+      {error ? (
+        <Text style={[styles.error, { color: theme.COLOR_ERROR }]}>{error}</Text>
+      ) : null}
       <TextInput
         placeholder="Email"
         value={email}
-        style={styles.input}
+        style={[
+          styles.input,
+          {
+            backgroundColor: theme.COLOR_BACKGROUND,
+            color: theme.COLOR_TEXT,
+            borderColor: theme.COLOR_PRIMARY,
+          },
+        ]}
         onChangeText={(text) => setEmail(text)}
       />
       <TextInput
         placeholder="Username"
         value={username}
-        style={styles.input}
+        style={[
+          styles.input,
+          {
+            backgroundColor: theme.COLOR_BACKGROUND,
+            color: theme.COLOR_TEXT,
+            borderColor: theme.COLOR_PRIMARY,
+          },
+        ]}
         onChangeText={(text) => setUsername(text)}
       />
       <TextInput
         placeholder="Password"
         secureTextEntry
         value={password}
-        style={styles.input}
+        style={[
+          styles.input,
+          {
+            backgroundColor: theme.COLOR_BACKGROUND,
+            color: theme.COLOR_TEXT,
+            borderColor: theme.COLOR_PRIMARY,
+          },
+        ]}
         onChangeText={(text) => setPassword(text)}
       />
-       <Pressable onPress={handleSignup}>
-        <Text style={styles.button}>Create account</Text>
+      <Pressable onPress={handleSignup}>
+        <Text
+          style={[
+            styles.button,
+            {
+              backgroundColor: theme.COLOR_PRIMARY,
+              color: theme.COLOR_TEXT_HEADER,
+            },
+          ]}
+        >
+          Create account
+        </Text>
       </Pressable>
       <Pressable onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.button}>Or log in</Text>
+        <Text
+          style={[
+            styles.button,
+            {
+              backgroundColor: theme.COLOR_PRIMARY,
+              color: theme.COLOR_TEXT_HEADER,
+            },
+          ]}
+        >
+          Or log in
+        </Text>
       </Pressable>
     </View>
   );
@@ -54,37 +101,30 @@ const SignUp = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: themeStyle.COLOR_WHITE,
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center', 
+    alignItems: 'center',
     gap: 10,
     padding: 20,
   },
   title: {
     fontSize: themeStyle.FONT_SIZE_LARGE,
     fontWeight: themeStyle.FONT_WEIGHT_BOLD,
-    color: themeStyle.COLOR_PRIMARY,
     paddingBottom: themeStyle.DEFAULT_PADDING,
   },
   input: {
-    backgroundColor: themeStyle.COLOR_WHITE,
     padding: 10,
-    borderColor: themeStyle.COLOR_PRIMARY,
     borderWidth: 1,
     borderRadius: 5,
     width: 200,
   },
   button: {
-    backgroundColor: themeStyle.COLOR_PRIMARY,
-    color: themeStyle.COLOR_WHITE,
     padding: 10,
     borderRadius: 5,
     textAlign: 'center',
     width: 200,
   },
   error: {
-    color: themeStyle.COLOR_ERROR,
     paddingBottom: 10,
   },
 });
