@@ -10,7 +10,7 @@ const SwitchPublic = ({ isPublic, setIsPublic }) => {
         <Switch
             style={{ marginBottom: 10 }}
             trackColor={{ false: theme.COLOR_INACTIVE, true: theme.COLOR_PRIMARY }}
-            thumbColor={isPublic ? theme.COLOR_WHITE : theme.COLOR_WHITE}
+            thumbColor={isPublic ? theme.COLOR_PRIMARY : theme.COLOR_WHITE}
             ios_backgroundColor={theme.COLOR_INACTIVE}
             onValueChange={setIsPublic}
             value={isPublic}

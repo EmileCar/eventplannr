@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { addLocation } from '../services/locationService';
 import { ThemeContext } from '../contexts/ThemeContext';
 import Button from '../components/buttons/Button';
+import SwitchPublic from '../components/input/SwitchPublic';
 
 const AddLocation = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -27,39 +28,33 @@ const AddLocation = () => {
     };
 
     return (
-    <ScrollView style={styles.container}>
-        <Text style={styles.title}>Add new location</Text>
-        {error ? <Text style={styles.error}>{error}</Text> : null}
+    <ScrollView style={[styles.container, {backgroundColor: theme.COLOR_BACKGROUND_ROOT}]}>
+        <Text style={[styles.title, {color: theme.COLOR_TEXT}]}>Add new location</Text>
+        {error ? <Text style={[styles.error, {color: theme.COLOR_ERROR}]}>{error}</Text> : null}
         <View>
-          <Text style={styles.label}>Enter location name</Text>
+          <Text style={[styles.label, {color: theme.COLOR_TEXT}]}>Enter location name</Text>
           <TextInput
             placeholder="Location name"
             value={name}
-            style={[styles.input, {borderColor: theme.COLOR_INACTIVE, backgroundColor: theme.COLOR_BACKGROUND}]}
+            style={[styles.input, {borderColor: theme.COLOR_INACTIVE, backgroundColor: theme.COLOR_BACKGROUND, color: theme.COLOR_TEXT}]}
             onChangeText={(text) => setName(text)}
             placeholderTextColor={theme.COLOR_INACTIVE}
           />
         </View>
         <View>
-          <Text style={styles.label}>Enter location adress</Text>
+          <Text style={[styles.label, {color: theme.COLOR_TEXT}]}>Enter location adress</Text>
           <TextInput
             placeholder="Location adress"
             value={address}
-            style={[styles.input, {borderColor: theme.COLOR_INACTIVE, backgroundColor: theme.COLOR_BACKGROUND}]}
+            style={[styles.input, {borderColor: theme.COLOR_BORDER, backgroundColor: theme.COLOR_BACKGROUND, color: theme.COLOR_TEXT}]}
             onChangeText={(text) => setAddress(text)}
             placeholderTextColor={theme.COLOR_INACTIVE}
           />
         </View>
         <View >
-        <Text style={styles.label}>Is this location public?</Text>
+        <Text style={[styles.label, {color: theme.COLOR_TEXT}]}>Is this location public?</Text>
         <View style={{paddingBottom: 10}}>
-          <Switch
-            trackColor={{ false: theme.COLOR_INACTIVE, true: theme.COLOR_PRIMARY }}
-            thumbColor={isPublic ? theme.COLOR_BACKGROUND : theme.COLOR_TEXT_HEADER}
-            ios_backgroundColor={theme.COLOR_INACTIVE}
-            onValueChange={setIsPublic}
-            value={isPublic}
-          />
+          <SwitchPublic isPublic={isPublic} setIsPublic={setIsPublic} />
         </View>
       </View>
       {!isPublic && <Text style={[styles.warning, {color: theme.COLOR_WARNING}]}>Warning! If your event is public, the location will still be shown for this event.</Text>}
@@ -106,7 +101,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   error: {
-    color: themeStyle.COLOR_ERROR,
     paddingBottom: 10,
     textAlign: 'center',
   },

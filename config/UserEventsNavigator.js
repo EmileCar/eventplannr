@@ -48,12 +48,20 @@ export const UserEventsNavigator = () => {
             <UserEventsStack.Screen
                 options={() => ({
                     title: 'Add Event',
+                    headerStyle: {
+                        backgroundColor: theme.COLOR_HEADER,
+                    },
+                    headerTintColor: theme.COLOR_TEXT_WHITE,
                 })}
                 name="AddEvent" component={AddEvent} 
             />
             <UserEventsStack.Screen
                 options={() => ({
                     title: `Add Location`,
+                    headerStyle: {
+                        backgroundColor: theme.COLOR_HEADER,
+                    },
+                    headerTintColor: theme.COLOR_TEXT_WHITE,
                 })}
                 name="AddLocation" component={AddLocation} 
             />

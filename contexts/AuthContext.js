@@ -3,6 +3,7 @@ import { getUser, signIn, signUp } from '../services/authService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator, View, Text } from 'react-native';
 import themeStyle from '../styles/theme.style';
+import { ThemeContext } from './ThemeContext';
 
 export const AuthContext = createContext();
 
@@ -10,6 +11,7 @@ export const AuthProvider = ({children}) => {
     const [currentUser, setCurrentUser] = useState(null);
     const [showDelayedMessage, setShowDelayedMessage] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const { theme } = useContext(ThemeContext)
 
     const signInFunc = async (email, password) => {
         const data = await signIn(email, password)
@@ -63,14 +65,14 @@ export const AuthProvider = ({children}) => {
     return (
         <AuthContext.Provider value={authInfo}>
           {isLoading ? (
-            <View style={{alignItems: "center", justifyContent: "center", width: "100%", height: "100%"}}>
-              <Text style={{marginBottom: 10}}>Loading the application...</Text>
+            <View style={{alignItems: "center", justifyContent: "center", flex: 1, backgroundColor: theme.COLOR_BACKGROUND_ROOT}}>
+              <Text style={{marginBottom: 10, color: theme.COLOR_TEXT}}>Loading the application...</Text>
               {showDelayedMessage && (
-                <Text style={{ marginBottom: 10 , padding: 16, textAlign: "center"}}>
+                <Text style={{ marginBottom: 10 , padding: 16, textAlign: "center", color: theme.COLOR_TEXT}}>
                   If this is your first time starting the application, the API takes very long to load. So please be patient and keep the page loading, the API will start up shortly. This can take up about 2-3 minutes.
                 </Text>
               )}
-              <ActivityIndicator style={{alignSelf: "center", justifySelf: "center"}} size="large" color={themeStyle.COLOR_PRIMARY} />
+              <ActivityIndicator style={{alignSelf: "center", justifySelf: "center"}} size="large" color={theme.COLOR_TEXT_AUTH} />
             </View>
           ) : (
             children

@@ -2,7 +2,7 @@ import artImage from '../assets/img/eventPlaceholderImages/art.jpg';
 import bbqImage from '../assets/img/eventPlaceholderImages/bbq.jpg';
 import birthdayImage from '../assets/img/eventPlaceholderImages/birthday.jpg';
 import carnavalImage from '../assets/img/eventPlaceholderImages/carnaval.jpg';
-import cheeseAndWineImage from '../assets/img/eventPlaceholderImages/cheese&wine.jpg';
+import cheeseAndWineImage from '../assets/img/eventPlaceholderImages/cheesewine.jpg';
 import conferenceImage from '../assets/img/eventPlaceholderImages/conference.jpg';
 //import defaultImage from '../assets/img/eventPlaceholderImages/default.jpg';
 import dinnerImage from '../assets/img/eventPlaceholderImages/dinner.jpg';

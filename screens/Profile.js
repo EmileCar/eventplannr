@@ -54,14 +54,15 @@ const Profile = () => {
           }
         </View>
       </View>
-      <ListItem bottomDivider>
       <Pressable onPress={() => toggleTheme()}>
-        <ListItem.Content>
-          <ListItem.Title>Change theme</ListItem.Title>
-        </ListItem.Content>
+        <ListItem bottomDivider>
+          <ListItem.Content>
+            <ListItem.Title style={{ color: "black" }}>Change theme</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Swipeable />
+        </ListItem>
       </Pressable>
-      <ListItem.Swipeable />
-    </ListItem>
+
 
     <ListItem.Accordion
         content={
@@ -101,12 +102,12 @@ const Profile = () => {
           </ListItem>
         ))}
       </ListItem.Accordion>
-      <Pressable onPress={() => logOut()} style={{ marginTop: 30 }}>
+      <Pressable onPress={() => logOut()}>
         <ListItem bottomDivider>
           <ListItem.Content>
-            <ListItem.Title>Sign out</ListItem.Title>
+            <ListItem.Title style={{ color: "black" }}>Sign out</ListItem.Title>
           </ListItem.Content>
-          <Ionicons name='arrow-forward' size={"large"} color={theme.COLOR_ICON}/>
+          <ListItem.Swipeable />
         </ListItem>
       </Pressable>
       <AwesomeAlert
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 18,
     fontWeight: 500,
-    with: "100%",
+    width: "100%",
   },
   topSectionContent: {
     alignSelf: "center",
@@ -151,8 +152,8 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: themeStyle.FONT_SIZE_DISPLAY,
-    fontWeight: themeStyle.FONT_WEIGHT_BOLD,
-    with: "100%",
+    fontWeight: 500,
+    width: "100%",
   },
   email: {
     textAlign: "center",

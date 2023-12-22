@@ -20,8 +20,8 @@ const EventDatePicker = ({ value, onValueChange }) => {
 
   return (
     <>
-      <Pressable onPress={handleDatePress} style={[styles.input, {backgroundColor: theme.COLOR_BACKGROUND, borderColor: theme.COLOR_INACTIVE}]}>
-        <Text>{dayjs(value).format('YYYY-MM-DD HH:mm')}</Text>
+      <Pressable onPress={handleDatePress} style={[styles.input, {backgroundColor: theme.COLOR_BACKGROUND, borderColor: theme.COLOR_BORDER}]}>
+        <Text style={{color: theme.COLOR_TEXT}}>{dayjs(value).format('YYYY-MM-DD HH:mm')}</Text>
       </Pressable>
       {showDatePicker && (
         <DateTimePicker

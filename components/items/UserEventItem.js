@@ -52,7 +52,7 @@ UserEventItem.propTypes = {
 	event: PropTypes.shape({
 		id: PropTypes.number.isRequired,
 		title: PropTypes.string.isRequired,
-		startDateTime: PropTypes.instanceOf(Date).isRequired,
+		startDateTime: PropTypes.string.isRequired,
 		location: PropTypes.shape({
 	  		name: PropTypes.string,
 		}),

@@ -8,7 +8,7 @@ const colors = {
 		COLOR_BACKGROUND: 'white',		// color for background of components
 		COLOR_BACKGROUND_ROOT: 'rgb(242, 242, 242)',	// color for background of screens
 		COLOR_ITEM_BG: '#eaeaea',		// color for background of list items
-		COLOR_BORDER: 'grey',			
+		COLOR_BORDER: 'lightgrey',			
 		COLOR_ERROR: 'red',
 		COLOR_WARNING: 'orange',
 		COLOR_WHITE: 'white',
@@ -17,7 +17,8 @@ const colors = {
 		COLOR_BUTTON_TEXT: 'white',
 		COLOR_INACTIVE: 'lightgrey',
 		COLOR_TABBARACTIVE: '#8abfff',
-		COLOR_TABBARINACTIVE: "white"
+		COLOR_TABBARINACTIVE: "white",
+		COLOR_ROWITEM: 'white',
 	},
 	dark: {
 		COLOR_PRIMARY: '#1e1f1d',
@@ -37,7 +38,8 @@ const colors = {
 		COLOR_BUTTON_TEXT: 'black',
 		COLOR_INACTIVE: 'lightgrey',
 		COLOR_TABBARACTIVE: 'grey',
-		COLOR_TABBARINACTIVE: "black"
+		COLOR_TABBARINACTIVE: "black",
+		COLOR_ROWITEM: 'black',
 	},
 };
 

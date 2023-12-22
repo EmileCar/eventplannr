@@ -68,7 +68,7 @@ const EditEvent = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, {backgroundColor: theme.COLOR_BACKGROUND_ROOT}]}>
       <Image source={defaultImage} style={styles.image} />
       {error ? <Text style={[styles.error, {color: theme.COLOR_ERROR}]}>{error}</Text> : null}
       <TextInput
@@ -83,21 +83,21 @@ const EditEvent = () => {
         rows={3}
         placeholder="Enter event description here"
         value={description}
-        style={[styles.input, {borderColor: theme.COLOR_INACTIVE, backgroundColor: theme.COLOR_BACKGROUND}]}
+        style={[styles.input, {borderColor: theme.COLOR_BORDER, backgroundColor: theme.COLOR_BACKGROUND , color: theme.COLOR_TEXT}]}
         onChangeText={(text) => setDescription(text)}
         placeholderTextColor={theme.COLOR_INACTIVE}
       />
-      <Text style={styles.label}>When does your event start?</Text>
+      <Text style={[styles.label, {color: theme.COLOR_TEXT}]}>When does your event start?</Text>
       <EventDatePicker 
         value={startDateTime} 
         onValueChange={setStartDateTime} 
       />
-      <Text style={styles.label}>Select a location</Text>
+      <Text style={[styles.label, {color: theme.COLOR_TEXT}]}>Select a location</Text>
       <LocationSelect location={location} setLocation={setLocation} />
       <Pressable onPress={() => navigate.navigate("AddLocation") }>
-        <Text style={[styles.link, {color: theme.COLOR_PRIMARY}]}>Not in list? Create a new location</Text>
+        <Text style={[styles.link, {color: theme.COLOR_ICON}]}>Not in list? Create a new location</Text>
       </Pressable>
-      <Text style={styles.label}>Is this event public?</Text>
+      <Text style={[styles.label, {color: theme.COLOR_TEXT}]}>Is this event public?</Text>
       <SwitchPublic isPublic={isPublic} setIsPublic={setIsPublic} />
       <Button onPress={handleSubmit} text={event ? "Update event" : "Add event"} isLoading={isLoading}/>
     </ScrollView>
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
     marginBottom: 10,
-    fontSize: themeStyle.FONT_SIZE_MEDIUM,
+    fontSize: themeStyle.FONT_SIZE_LARGE,
     fontWeight: themeStyle.FONT_WEIGHT_MEDIUM,
   },
   label: {

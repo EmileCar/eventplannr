@@ -84,27 +84,27 @@ const EventDetail = () => {
     }
   }
 
-  const renderRowItem = (iconName, primaryText, secondaryText = null) => (
-    <View style={styles.rowItem}>
-      <Ionicons style={styles.rowItemIcon} name={iconName} size={40} color={theme.COLOR_PRIMARY} />
+  const renderRowItem = (iconName, primaryText, secondaryText) => (
+    <View style={[styles.rowItem, { backgroundColor: theme.COLOR_ROWITEM }]}>
+      <Ionicons style={styles.rowItemIcon} name={iconName} size={40} color={theme.COLOR_ICON} />
       <View>
-        <Text style={styles.text}>{primaryText}</Text>
-        {secondaryText && <Text style={[styles.text, { fontWeight: themeStyle.FONT_WEIGHT_MEDIUM }]}>{secondaryText}</Text>}
+        <Text style={[styles.text, { color: theme.COLOR_TEXT }]}>{primaryText}</Text>
+        <Text style={[styles.text, { fontWeight: themeStyle.FONT_WEIGHT_MEDIUM, color: theme.COLOR_TEXT }]}>{secondaryText}</Text>
       </View>
     </View>
   );
     
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} style={{flex: 1, backgroundColor: theme.COLOR_BACKGROUND_ROOT}}>
       <View style={styles.container}>
         {isLoading ? (
-          <ActivityIndicator size="large" color={themeStyle.COLOR_PRIMARY} />
+          <ActivityIndicator size="large" color={theme.COLOR_ICON} />
         ) : (
           <>
             {error && <Text style={{color: theme.COLOR_ERROR, textAlign: "center"}}>{error}</Text>}
             <Image source={defaultImage} style={styles.image} />
-            <Text style={[styles.text, styles.title]}>{event.title}</Text>
-            <Text style={[styles.text, {marginBottom: 16}]}>{event.description}</Text>
+            <Text style={[styles.text, styles.title, {color: theme.COLOR_TEXT}]}>{event.title}</Text>
+            <Text style={[styles.text, {marginBottom: 16, color: theme.COLOR_TEXT}]}>{event.description}</Text>
             <View style={styles.row}>
               {renderRowItem("calendar", formatDate(event.startDateTime), calculateTimeUntil(event.startDateTime))}
               {renderRowItem("location", event.location ? event.location.name : "???", event.location ? event.location.address : "???")}
@@ -114,10 +114,11 @@ const EventDetail = () => {
               <SwitchSelector
                 initial={statusNumber}
                 onPress={value => changeAttendance(value)}
-                textColor={themeStyle.COLOR_PRIMARY}
-                selectedColor={themeStyle.COLOR_WHITE}
-                buttonColor={themeStyle.COLOR_PRIMARY}
-                borderColor={theme.COLOR_PRIMARY}
+                textColor={theme.COLOR_TEXT_AUTH}
+                selectedColor={theme.COLOR_BACKGROUND}
+                buttonColor={theme.COLOR_TEXT_AUTH}
+                borderColor={theme.COLOR_BUTTON}
+                backgroundColor={theme.COLOR_BACKGROUND}
                 hasPadding
                 options={options}
                 style={{marginTop: 20, marginBottom: 16}}

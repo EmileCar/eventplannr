@@ -7,20 +7,20 @@ const Button = ({ isLoading, onPress, text, color, icon }) => {
 	const { theme } = useContext(ThemeContext)
 
 	if(!color) {
-		color = theme.COLOR_PRIMARY;
+		color = theme.COLOR_BUTTON;
 	}
 
 	return (
 		<Pressable
-			style={[styles.button, { backgroundColor: color, color: theme.COLOR_WHITE }]}
+			style={[styles.button, { backgroundColor: color, color: theme.COLOR_BUTTON_TEXT }]}
 			onPress={onPress}
 		>
 			{isLoading ? (
-				<ActivityIndicator size="small" color={theme.COLOR_WHITE} />
+				<ActivityIndicator size="small" color={theme.COLOR_BUTTON_TEXT} />
 			) : (
 				<View style={{flexDirection: "row", justifyContent: "center", gap: 8}}>
 					{icon}
-					<Text style={{textAlign: "center", color: theme.COLOR_WHITE}}>{text}</Text>
+					<Text style={{textAlign: "center", color: theme.COLOR_BUTTON_TEXT}}>{text}</Text>
 				</View>
 			)}
 		</Pressable>

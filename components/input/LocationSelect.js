@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, FlatList, StyleSheet, TextInput, Pressable } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, Text, Modal, FlatList, StyleSheet, TextInput, Pressable } from 'react-native';
 import themeStyle from '../../styles/theme.style';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { getLocations, getTopLocations } from '../../services/locationService';
-import LocationItemInAddUser from '../items/LocationItemInAddUser';
+import { ThemeContext } from '../../contexts/ThemeContext';
+import Button from '../buttons/Button';
+import LocationItemInAddEvent from '../items/LocationItemInAddEvent';
 
 const LocationSelect = ({ location, setLocation }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [searchValue, setSearchValue] = useState('');
     const [locations, setLocations] = useState([]);
+    const { theme } = useContext(ThemeContext)
 
     const handleSelect = (option) => {
         setLocation(option);
@@ -47,37 +50,40 @@ const LocationSelect = ({ location, setLocation }) => {
     return (
         <>
             {location ? (
-                <Pressable onPress={() => setModalVisible(true)}>
-                    <LocationItemInAddUser location={location}/>
-                </Pressable>
+                <View>
+                    <Pressable onPress={() => setModalVisible(true)}>
+                        <LocationItemInAddEvent location={location}/>
+                    </Pressable>
+                </View>
             ) : (
                 <View>
-                    <Pressable style={styles.button} onPress={() => setModalVisible(true)}>
-                        <Text>Select an option</Text>
-                        <Ionicons name="chevron-down-outline" size={20} />
+                    <Pressable style={[styles.button, {backgroundColor: theme.COLOR_BACKGROUND, borderColor: theme.COLOR_BORDER}]} onPress={() => setModalVisible(true)}>
+                        <Text style={{color: theme.COLOR_TEXT}}>Select an option</Text>
+                        <Ionicons name="chevron-down-outline" size={20} color={theme.COLOR_TEXT} />
                     </Pressable>
                 </View>
             )}
             <Modal visible={modalVisible} animationType="slide">
-                <TextInput
-                    placeholder="Search"
-                    value={searchValue}
-                    onChangeText={(value) => setSearchValue(value)}
-                    style={styles.input}
-                />
-                <FlatList
-                    data={locations}
-                    renderItem={({ item }) => (
-                        <Pressable style={styles.listItem} onPress={() => handleSelect(item)}>
-                            <Text style={styles.name}>{item.name}</Text>
-                            <Text>{item.address}</Text>    
-                        </Pressable>
-                    )}
-                />
-
-                <Pressable style={styles.closeButton} onPress={() => setModalVisible(false)}>
-                    <Text style={styles.closeButtonText}>Close</Text>
-                </Pressable>
+                <View style={{backgroundColor: theme.COLOR_BACKGROUND_ROOT, flex:1}}>
+                    <TextInput
+                        placeholder="Search"
+                        value={searchValue}
+                        onChangeText={(value) => setSearchValue(value)}
+                        style={[styles.input, { color: theme.COLOR_TEXT, backgroundColor: theme.COLOR_BACKGROUND, borderColor: theme.COLOR_BORDER}]}
+                    />
+                    <FlatList
+                        data={locations}
+                        renderItem={({ item }) => (
+                            <Pressable style={[styles.listItem, { borderBottomColor: theme.COLOR_BORDER}]} onPress={() => handleSelect(item)}>
+                                <Text style={[styles.name, {color: theme.COLOR_TEXT}]}>{item.name}</Text>
+                                <Text style={{color: theme.COLOR_TEXT}}>{item.address}</Text>    
+                            </Pressable>
+                        )}
+                    />
+                    <View style={{margin: themeStyle.DEFAULT_PADDING}} >
+                        <Button text="Close" onPress={() => setModalVisible(false)} />
+                    </View>
+                </View>
             </Modal>
         </>
     );
@@ -88,44 +94,31 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     button: {
-        backgroundColor: themeStyle.COLOR_WHITE,
         borderRadius: 5,
         padding: 10,
         fontSize: themeStyle.FONT_SIZE_SMALL,
         fontWeight: themeStyle.FONT_WEIGHT_LIGHT,
-        borderColor: themeStyle.COLOR_INACTIVE,
         borderWidth: 1,
         flexDirection: 'row',
     },
     input: {
         borderRadius: 5,
         padding: 10,
+        borderWidth: 1,
         fontSize: themeStyle.FONT_SIZE_SMALL,
         fontWeight: themeStyle.FONT_WEIGHT_LIGHT,
-        borderColor: themeStyle.COLOR_INACTIVE,
         borderWidth: 1,
         margin: 10,
     },
     listItem: {
         padding: 10,
         flex: 1,
-        borderBottomColor: themeStyle.COLOR_INACTIVE,
         borderBottomWidth: 1,
     },
     name: {
         fontSize: themeStyle.FONT_SIZE_MEDIUM,
         fontWeight: themeStyle.FONT_WEIGHT_MEDIUM,
-    },
-    closeButton: {
-        backgroundColor: themeStyle.COLOR_PRIMARY,
-        padding: 10,
-        borderRadius: 5,
-        margin: 10,
-    },
-    closeButtonText: {
-        color: themeStyle.COLOR_WHITE,
-        textAlign: 'center',
-    },  
+    }
 });
 
 export default LocationSelect;
