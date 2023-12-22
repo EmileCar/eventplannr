@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import themeStyle from '../../styles/theme.style';
 import { ThemeContext } from '../../contexts/ThemeContext';
@@ -11,6 +12,10 @@ const SectionHeader = ({ title }) => {
       <View style={[styles.line, {backgroundColor: theme.COLOR_TEXT}]} />
     </View>
   );
+};
+
+SectionHeader.propTypes = {
+  title: PropTypes.string.isRequired,
 };
 
 const styles = StyleSheet.create({

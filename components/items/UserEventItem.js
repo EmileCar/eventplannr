@@ -49,19 +49,7 @@ const UserEventItem = ({ event }) => {
 };
 
 UserEventItem.propTypes = {
-	event: PropTypes.shape({
-		id: PropTypes.number.isRequired,
-		title: PropTypes.string.isRequired,
-		startDateTime: PropTypes.string.isRequired,
-		location: PropTypes.shape({
-	  		name: PropTypes.string,
-		}),
-		organisators: PropTypes.arrayOf(
-	  	PropTypes.shape({
-			name: PropTypes.string,
-	  	})
-		),
-	}).isRequired,
+	event: PropTypes.object.isRequired,
 };
 
 const styles = StyleSheet.create({

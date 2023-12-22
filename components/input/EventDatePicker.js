@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
 import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
+import PropTypes from 'prop-types';
 import themeStyle from '../../styles/theme.style';
 import { ThemeContext } from '../../contexts/ThemeContext';
 
@@ -38,6 +39,11 @@ const EventDatePicker = ({ value, onValueChange }) => {
       )}
     </>
   );
+};
+
+EventDatePicker.propTypes = {
+  value: PropTypes.instanceOf(Date).isRequired,
+  onValueChange: PropTypes.func,
 };
 
 const styles = StyleSheet.create({

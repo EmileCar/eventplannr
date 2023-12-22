@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, Modal, FlatList, StyleSheet, TextInput, Pressable } from 'react-native';
+import PropTypes from 'prop-types';
 import themeStyle from '../../styles/theme.style';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { getLocations, getTopLocations } from '../../services/locationService';
@@ -87,6 +88,11 @@ const LocationSelect = ({ location, setLocation }) => {
             </Modal>
         </>
     );
+};
+
+LocationSelect.propTypes = {
+    location: PropTypes.object, 
+    setLocation: PropTypes.func,
 };
 
 const styles = StyleSheet.create({

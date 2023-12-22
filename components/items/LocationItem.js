@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import themeStyle from '../../styles/theme.style';
 import { ThemeContext } from '../../contexts/ThemeContext';
 
@@ -11,6 +12,10 @@ const LocationItem = ({ location }) => {
       <Text style={[styles.date, {color: theme.COLOR_TEXT}]}>{location.address}</Text>
     </View>
   );
+};
+
+LocationItem.propTypes = {
+  location: PropTypes.object.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -33,7 +38,5 @@ const styles = StyleSheet.create({
     fontSize: themeStyle.FONT_SIZE_SMALL,
   },
 });
-
-
 
 export default LocationItem;

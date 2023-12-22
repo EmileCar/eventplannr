@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import getDefaultImage from '../../utils/eventImageUtil';
 import themeStyle from '../../styles/theme.style';
@@ -18,6 +19,10 @@ const EventItem = ({ event }) => {
       </View>
     </View>
   );
+};
+
+EventItem.propTypes = {
+  event: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({
@@ -45,7 +50,5 @@ const styles = StyleSheet.create({
     fontSize: themeStyle.FONT_SIZE_SMALL,
   },
 });
-
-
 
 export default EventItem;

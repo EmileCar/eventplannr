@@ -43,7 +43,7 @@ const TabNavigator = () => {
 					<Ionicons name="list" color={color} size={size} />
 					),
 				}}
-				name="Dashboard"
+				name="DashboardTab"
 				component={DashboardNavigator}
 			/>
 			<BottomTab.Screen
@@ -54,7 +54,7 @@ const TabNavigator = () => {
 					),
 					headerShown: false,
 				}}
-				name="UserEvents"
+				name="UserEventsTab"
 				component={UserEventsNavigator}
 			/>
 			<BottomTab.Screen
@@ -65,7 +65,7 @@ const TabNavigator = () => {
 						<Ionicons name="person" color={color} size={size} />
 					),
 				}}
-				name="Profile"
+				name="ProfileTab"
 				component={ProfileNavigator}
 			/>
 		</BottomTab.Navigator>

@@ -39,7 +39,7 @@ export const UserEventsNavigator = () => {
                 }}
             />
             <UserEventsStack.Screen
-                name="EventDetailNavigator"
+                name="EventDetailNavigatorUserEvents"
                 component={EventDetailNavigator}
                 options={{
                 headerShown: false,

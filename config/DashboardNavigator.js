@@ -15,14 +15,15 @@ export const DashboardNavigator = () => {
     return (
         <DashboardStack.Navigator>
             <DashboardStack.Screen
-                name="Dashboard"
+                name="DashboardScreen"
                 component={Dashboard}
                 options={{
+                    title: `Dashboard`,
                     headerShown: false
                 }} 
             />
             <DashboardStack.Screen
-                name="EventDetailNavigator"
+                name="EventDetailNavigatorDashboard"
                 component={EventDetailNavigator}
                 options={{
                 headerShown: false,
@@ -36,7 +37,7 @@ export const DashboardNavigator = () => {
                     },
                     headerTintColor: theme.COLOR_TEXT_WHITE,
                 })}
-                name="SearchEvents" 
+                name="SearchEventsScreen" 
                 component={SearchEvents} 
             />
         </DashboardStack.Navigator>

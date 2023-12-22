@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import { ThemeContext } from '../contexts/ThemeContext';
 import SectionHeader from '../components/header/SectionHeader';
 import UserEventItem from '../components/items/UserEventItem';
@@ -20,9 +20,13 @@ const UserEvents = () => {
   const fetchUserEventsData = async () => {
     setIsLoadingGoingEvents(true);
     setIsLoadingMaybeEvents(true);
-    try{
-      await getGoingEvents().then((events) => { setGoingEvents(events) }).catch((err) => { console.log(err) });
-      await getMaybeEvents().then((events) => { setMaybeEvents(events) }).catch((err) => { console.log(err) });
+    try {
+      await getGoingEvents().then((events) => {
+        setGoingEvents(events);
+      });
+      await getMaybeEvents().then((events) => {
+        setMaybeEvents(events);
+      });
     } catch (err) {
       console.log(err);
     } finally {
@@ -32,39 +36,19 @@ const UserEvents = () => {
   };
 
   return (
-    <ScrollView style={[styles.container, {backgroundColor: theme.COLOR_BACKGROUND_ROOT}]}>
-      <SectionHeader title="Going" />
-      {isLoadingGoingEvents ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={theme.COLOR_ICON} />
-        </View>
-      ) : (
-        <>
-          {goingEvents.length === 0 ? <Text style={[styles.noEvents, {color: theme.COLOR_TEXT}]}>No events</Text> : null}
-          <FlatList
-            data={goingEvents}
-            renderItem={({ item }) => <UserEventItem event={item} />}
-            keyExtractor={(item) => item.id.toString()}
-          />
-        </>
-      )}
-
-      <SectionHeader title="Maybe" />
-      {isLoadingMaybeEvents ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={theme.COLOR_ICON} />
-        </View>
-      ) : (
-        <>
-          {maybeEvents.length === 0 ? <Text style={[styles.noEvents, {color: theme.COLOR_TEXT}]}>No events</Text> : null}
-          <FlatList
-            data={maybeEvents}
-            renderItem={({ item }) => <UserEventItem event={item} />}
-            keyExtractor={(item) => item.id.toString()}
-          />
-        </>
-      )}
-    </ScrollView>
+    <FlatList
+      style={[styles.container, { backgroundColor: theme.COLOR_BACKGROUND_ROOT }]}
+      ListHeaderComponent={() => <SectionHeader title="Going" />}
+      ListFooterComponent={() => <SectionHeader title="Maybe" />}
+      data={[...goingEvents, ...maybeEvents]}
+      renderItem={({ item }) => <UserEventItem event={item} />}
+      keyExtractor={(item) => item.id.toString()}
+      ListEmptyComponent={<Text style={[styles.noEvents, { color: theme.COLOR_TEXT }]}>No events</Text>}
+      ListFooterComponentStyle={styles.sectionHeader}
+      ListHeaderComponentStyle={styles.sectionHeader}
+      refreshing={isLoadingGoingEvents || isLoadingMaybeEvents}
+      onRefresh={fetchUserEventsData}
+    />
   );
 };
 
@@ -73,11 +57,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: themeStyle.DEFAULT_PADDING,
   },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+  sectionHeader: {
+    marginTop: 10,
   },
   noEvents: {
     margin: 20,
