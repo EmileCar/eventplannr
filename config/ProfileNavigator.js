@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import EditEvent from "../screens/EditEvent";
 import EventDetail from "../screens/EventDetail";
 import Profile from "../screens/Profile";
-import { EventDetailNavigator } from "./EventDetailNavigator";
 
 export const ProfileNavigator = () => {
     const ProfileStack = createNativeStackNavigator();
@@ -21,12 +20,15 @@ export const ProfileNavigator = () => {
                 })}
                 name="Profile" component={Profile} />
             <ProfileStack.Screen
-                name="EventDetailNavigatorProfile"
-                component={EventDetailNavigator}
-                options={{
-                headerShown: false,
-                }}
-            />
+                options={() => ({
+                    title: `Edit Event`,
+                })}
+                name="EditEvent" component={EditEvent} />
+            <ProfileStack.Screen
+                options={() => ({
+                    title: `Event Detail`,
+                })}
+                name="EventDetail" component={EventDetail} />
         </ProfileStack.Navigator>
     );
 };

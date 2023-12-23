@@ -7,11 +7,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { getEventDay, getEventMonth } from '../../utils/datetimeUtils';
 import { ThemeContext } from '../../contexts/ThemeContext';
 
-const UserEventItem = ({ event }) => {
+const UserEventItem = ({ event, navigationLink }) => {
+	if(!navigationLink){
+		navigationLink = "EventDetailNavigatorUserEvents"
+	}
 	const navigation = useNavigation();
 	const { theme } = useContext(ThemeContext)
 	const navigateToEventDetail = (eventId) => {
-		navigation.navigate('EventDetailNavigator', { screen: 'EventDetail', params: { eventId } });
+		navigation.navigate(`${navigationLink}`, { screen: 'EventDetail', params: { eventId } });
 	};
 
 	const renderEventMonthAndDay = (date) => {

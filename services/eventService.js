@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import environment from '../environment.json';
+import { changeAttendanceStatus } from './userAttendanceService';
 
 const API_BASE_URL = environment.apiBaseUrlDevelopment;
 
@@ -80,15 +81,25 @@ export async function addEvent(eventData) {
             body: JSON.stringify(eventData),
         });
 
-        if(!response.ok) {
+        if (!response.ok) {
             const error = await response.json();
-            console.log(error)
-            if(error.message){
+            console.log(error);
+            if (error.message) {
                 throw new Error(error.message);
             }
             throw new Error('Er is iets misgegaan bij het toevoegen van het evenement.');
         }
-        return response;
+
+        // Extract the created event from the response
+        const createdEvent = await response.json();
+
+        try {
+            await changeAttendanceStatus(createdEvent.id, "GOING");
+        } catch (err) {
+            console.log(err);
+        }
+
+        return createdEvent;
     } catch (error) {
         console.error(error);
         throw new Error(error.message);
@@ -172,8 +183,6 @@ export async function getEventsOfUser() {
                 'Content-Type': 'application/json',
             },
         });
-
-        console.log(response)
 
         if(!response.ok) {
             throw new Error('Er is iets misgegaan bij het zoeken naar evenementen.');

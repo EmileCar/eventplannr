@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { AuthContext } from '../contexts/AuthContext';
 import { Avatar, ListItem } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { deleteEvent, getEventsOfUser } from '../services/eventService';
 import getDefaultImage from '../utils/eventImageUtil';
-import { formatDate } from '../utils/datetimeUtils';
-import { useNavigation } from '@react-navigation/native';
+import { formatDate, formatShortDateTime } from '../utils/datetimeUtils';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import themeStyle from '../styles/theme.style';
 import { ThemeContext } from '../contexts/ThemeContext';
@@ -25,6 +25,12 @@ const Profile = () => {
       fetchUserData()
     }
   }, [currentUser])
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchUserData();
+    }, [])
+  );
 
   const fetchUserData = async () => {
     await getEventsOfUser(currentUser.id).then((data) => { 
@@ -85,17 +91,17 @@ const Profile = () => {
             <ListItem.Content style={styles.eventContent}>
               <View>
                 <ListItem.Title>{event.title}</ListItem.Title>
-                <ListItem.Subtitle>{formatDate(event.startDateTime)}</ListItem.Subtitle>
+                <ListItem.Subtitle>{formatShortDateTime(new Date(event.startDateTime))}</ListItem.Subtitle>
               </View>
               <View style={styles.buttons}>
                 <Pressable style={styles.button} onPress={() => navigation.navigate("EditEvent", {event})}>
-                  <Ionicons name='pencil' size={"large"} color={theme.COLOR_ICON}/>
+                  <Text style={{color: theme.COLOR_ICON}}>Edit</Text>
                 </Pressable>
                 <Pressable style={styles.button} onPress={() => {
                   setEventToDelete(event);
                   setShowDeleteAlert(true);
                 }}>
-                  <Ionicons name='trash' size={"large"} color={theme.COLOR_ICON}/>
+                  <Text style={{color: theme.COLOR_ERROR}}>Delete</Text>
                 </Pressable>
               </View>
             </ListItem.Content>
@@ -154,6 +160,8 @@ const styles = StyleSheet.create({
     fontSize: themeStyle.FONT_SIZE_DISPLAY,
     fontWeight: 500,
     width: "100%",
+    textAlign: "center",
+    alignSelf: "center",
   },
   email: {
     textAlign: "center",

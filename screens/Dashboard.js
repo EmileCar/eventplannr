@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { getUpcomingEvents } from '../services/eventService';
 import themeStyle from '../styles/theme.style';
@@ -7,6 +7,7 @@ import { getTopLocations } from '../services/locationService';
 import DashboardLocationList from '../components/lists/DashboardLocationList';
 import DashboardHeader from '../components/header/DashboardHeader';
 import { ThemeContext } from '../contexts/ThemeContext';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -31,6 +32,12 @@ const Dashboard = () => {
       setIsLoading(false);
     }
   }
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchDashboardData();
+    }, [])
+  );
 
   
   return (

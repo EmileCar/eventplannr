@@ -7,7 +7,7 @@ const DashboardEventList = ({ events }) => {
   const navigation = useNavigation();
 
   const navigateToEventDetail = (eventId) => {
-    navigation.navigate('EventDetailNavigator', { screen: 'EventDetail', params: { eventId } });
+    navigation.navigate('EventDetailNavigatorDashboard', { screen: 'EventDetail', params: { eventId } });
   };
 
   return (

@@ -11,7 +11,7 @@ const DashboardHeader = () => {
     const { theme } = useContext(ThemeContext)
 
     const handleSearch = () => {
-      navigation.navigate('SearchEvents', { searchValue });
+      navigation.navigate('SearchEventsScreen', { searchValue });
     };
 
     return (

@@ -35,7 +35,7 @@ const SearchEvents = () => {
       return <Text style={[styles.text, { color: theme.COLOR_TEXT }]}>No events found</Text>;
     } else {
       return events.map((event) => {
-        return <UserEventItem style={styles.eventItem} key={event.id} event={event} />;
+        return <UserEventItem navigationLink="EventDetailNavigatorDashboard" style={styles.eventItem} key={event.id} event={event} />;
       });
     }
   };

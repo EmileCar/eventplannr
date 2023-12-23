@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { View, Text, FlatList, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
 import { ThemeContext } from '../contexts/ThemeContext';
 import SectionHeader from '../components/header/SectionHeader';
 import UserEventItem from '../components/items/UserEventItem';
 import { getGoingEvents, getMaybeEvents } from '../services/eventService';
 import themeStyle from '../styles/theme.style';
+import { useFocusEffect } from '@react-navigation/native';
 
 const UserEvents = () => {
   const [goingEvents, setGoingEvents] = useState([]);
@@ -16,6 +17,12 @@ const UserEvents = () => {
   useEffect(() => {
     fetchUserEventsData();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchUserEventsData();
+    }, [])
+  );
 
   const fetchUserEventsData = async () => {
     setIsLoadingGoingEvents(true);
@@ -36,19 +43,35 @@ const UserEvents = () => {
   };
 
   return (
-    <FlatList
-      style={[styles.container, { backgroundColor: theme.COLOR_BACKGROUND_ROOT }]}
-      ListHeaderComponent={() => <SectionHeader title="Going" />}
-      ListFooterComponent={() => <SectionHeader title="Maybe" />}
-      data={[...goingEvents, ...maybeEvents]}
-      renderItem={({ item }) => <UserEventItem event={item} />}
-      keyExtractor={(item) => item.id.toString()}
-      ListEmptyComponent={<Text style={[styles.noEvents, { color: theme.COLOR_TEXT }]}>No events</Text>}
-      ListFooterComponentStyle={styles.sectionHeader}
-      ListHeaderComponentStyle={styles.sectionHeader}
-      refreshing={isLoadingGoingEvents || isLoadingMaybeEvents}
-      onRefresh={fetchUserEventsData}
-    />
+    <ScrollView style={[styles.container, {backgroundColor: theme.COLOR_BACKGROUND_ROOT}]}>
+      <SectionHeader title="Going" />
+      {isLoadingGoingEvents ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={theme.COLOR_ICON} />
+        </View>
+      ) : (
+        <>
+          {goingEvents.length === 0 ? <Text style={[styles.noEvents, {color: theme.COLOR_TEXT}]}>No events</Text> : null}
+          {goingEvents.map((event) => (
+            <UserEventItem event={event} key={event.id} />
+          ))}
+        </>
+      )}
+
+      <SectionHeader title="Maybe" />
+      {isLoadingMaybeEvents ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={theme.COLOR_ICON} />
+        </View>
+      ) : (
+        <>
+          {maybeEvents.length === 0 ? <Text style={[styles.noEvents, {color: theme.COLOR_TEXT}]}>No events</Text> : null}
+          {maybeEvents.map((event) => (
+            <UserEventItem event={event} key={event.id} />
+          ))}
+        </>
+      )}
+    </ScrollView>
   );
 };
 

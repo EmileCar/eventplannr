@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, ActivityIndicator } from 'react-native';
 import getDefaultImage from '../utils/eventImageUtil';
 import themeStyle from '../styles/theme.style';
 import { deleteEvent, getEventById } from '../services/eventService';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { AuthContext } from '../contexts/AuthContext';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import SwitchSelector from 'react-native-switch-selector';
@@ -62,6 +62,12 @@ const EventDetail = () => {
       setDefaultImage(defaultImage);
     }
   }, [event]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchEventData();
+    }, [])
+  );
 
   const changeAttendance = async (value) => {
     try {

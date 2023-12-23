@@ -39,8 +39,9 @@ const TabNavigator = () => {
 			<BottomTab.Screen
 				options={{
 					headerShown: false,
+					tabBarLabel: 'Dashboard',
 					tabBarIcon: ({ color, size }) => (
-					<Ionicons name="list" color={color} size={size} />
+					<Ionicons name="apps" color={color} size={size} />
 					),
 				}}
 				name="DashboardTab"
@@ -50,7 +51,7 @@ const TabNavigator = () => {
 				options={{
 					tabBarLabel: 'User Events',
 					tabBarIcon: ({ color, size }) => (
-						<Ionicons name="person" color={color} size={size} />
+						<Ionicons name="list" color={color} size={size} />
 					),
 					headerShown: false,
 				}}

@@ -74,7 +74,7 @@ const EditEvent = () => {
       <TextInput
         placeholder="Event title"
         value={title}
-        style={[styles.input, styles.title, {borderColor: theme.COLOR_INACTIVE, backgroundColor: theme.COLOR_BACKGROUND}]}
+        style={[styles.input, styles.title, {borderColor: theme.COLOR_INACTIVE, backgroundColor: theme.COLOR_BACKGROUND, color: theme.COLOR_TEXT}]}
         onChangeText={(text) => setTitle(text)}
         placeholderTextColor={theme.COLOR_INACTIVE}
       />

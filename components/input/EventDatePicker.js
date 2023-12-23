@@ -30,9 +30,12 @@ const EventDatePicker = ({ value, onValueChange }) => {
           onValueChange={handleDateChange}
           mode="datetime"
           displayFullDays={true}
-          headerContainerStyle={{backgroundColor: theme.COLOR_ITEM_BG}}
+          headerContainerStyle={{backgroundColor: theme.COLOR_BORDER}}
           headerTextStyle={{fontSize: themeStyle.FONT_SIZE_SMALL, fontWeight: themeStyle.FONT_WEIGHT_BOLD}}
           headerButtonStyle={{padding: 10}}
+          calendarTextStyle={{color: theme.COLOR_TEXT}}
+          yearContainerStyle={{backgroundColor: theme.COLOR_BACKGROUND}}
+          monthContainerStyle={{backgroundColor: theme.COLOR_BACKGROUND}}
           buttonPrevIcon={<Text style={{fontSize: themeStyle.FONT_SIZE_MEDIUM}}>{'<'}</Text>}
           buttonNextIcon={<Text style={{fontSize: themeStyle.FONT_SIZE_MEDIUM}}>{'>'}</Text>}
         />
